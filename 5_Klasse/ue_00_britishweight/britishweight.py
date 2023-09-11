@@ -23,6 +23,11 @@ class Britishweight:
         return str(str(self.stones) + ' st ' + str(self.pounds) + ' lb')
 
 
+    def __add__(self, other):
+        if isinstance(Britishweight, other):
+            return Britishweight(0, self._pounds + other._pounds)
+
+
 
 
 
