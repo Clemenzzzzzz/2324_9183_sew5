@@ -1,0 +1,72 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+/'abstract class AbstractList
+abstract AbstractCollection
+interface List
+interface Collection
+
+List <|-- AbstractList
+Collection <|-- AbstractCollection
+
+Collection <|- List
+AbstractCollection <|- AbstractList
+AbstractList <|-- ArrayList
+
+class ArrayList {
+Object[] elementData
+size()
+}'/
+
+abstract class Component {
+Input[] inputs
+Output[] outputs
+String name
+calcState()
+send()
+connectInput()
+connectOutput()
+abstract calcState()
+toString()
+}
+
+class Taster{
+Output out
+press()
+release()
+
+}
+
+abstract class Node{
+boolean state
+isState()
+setState()
+}
+
+
+class Input{
+Component comp
+}
+
+class Output{
+List<Input> inputs
+connect()
+}
+
+class FF{
+State state
+calcState()
+handleFF()
+}
+
+class LED{
+boolean isOn
+
+}
+
+Component <|-- FF
+
+Component <|-- LED
+Node <|-- Input
+Node <|-- Output
+@enduml
