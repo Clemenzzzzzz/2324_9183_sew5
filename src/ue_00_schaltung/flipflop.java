@@ -23,5 +23,17 @@ public class flipflop {
         return !isTrue;
     }
 
+    public static void main(String[] args) {
+        flipflop f1 = new flipflop();
 
+        f1.setState();
+        System.out.println(f1.getQ());
+        System.out.println(f1.getInvertedQ());
+
+        f1.resetState();
+        System.out.println(f1.getQ());
+        System.out.println(f1.getInvertedQ());
+
+
+    }
 }
