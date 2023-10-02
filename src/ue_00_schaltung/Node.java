@@ -10,6 +10,6 @@ public abstract class Node {
     }
 
     public void setState(boolean state) {
-        Node.state = state;
+        this.state = state;
     }
 }
