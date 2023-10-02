@@ -1,6 +1,6 @@
 package ue_00_schaltung;
 
-public abstract class Node {
+public class Node { //für Testzwecke nicht abstract, sonst natürlich schon
     private boolean state = false;
 
 

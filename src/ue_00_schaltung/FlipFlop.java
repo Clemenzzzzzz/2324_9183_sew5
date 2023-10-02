@@ -4,6 +4,8 @@
 
 package ue_00_schaltung;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class FlipFlop extends Component {
@@ -30,11 +32,28 @@ public class FlipFlop extends Component {
             outputs.get(Q).setState(state);
         }
         if (outputs.size() > NOT_Q && outputs.get(NOT_Q) != null) {
-            outputs.get(NOT_Q).setState(state);
+            outputs.get(NOT_Q).setState(!state);
         }
     }
 
     public static void main(String[] args) {
+        Node s = new Node();
+        Node rs = new Node();
+        Node q = new Node();
+        Node nq = new Node();
+
+
+        FlipFlop f = new FlipFlop("FF1", Arrays.asList(s, rs), Arrays.asList(q, nq));
+
+        s.setState(true);
+        f.calcState();
+        System.out.println(q.getState());
+        System.out.println(nq.getState());
+
+        rs.setState(true);
+        f.calcState();
+        System.out.println(q.getState());
+        System.out.println(nq.getState());
 
     }
 }
