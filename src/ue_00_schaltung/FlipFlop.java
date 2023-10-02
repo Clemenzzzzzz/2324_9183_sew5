@@ -4,8 +4,8 @@
 
 package ue_00_schaltung;
 
-public class FlipFlop {
-    //TODO Konstruktur mit inputs und outputs
+public class FlipFlop extends Component {
+    // Konstruktur mit inputs und outputs
     // Component irgendwie implementieren --> oder als Anmerkung oben
     // mit Methode getInputPort
     // r und s als konstanten
@@ -13,49 +13,31 @@ public class FlipFlop {
     // der Flipflop muss nicht funktionieren
     // und Klassendiagramm anpassen
 
-    private boolean isTrue = false;
+    private boolean state = false;
+    private Node set; //sind Nodes weil wir ja Inputs und Outputs nicht implementieren müssen (laut BRE)
+    private Node reset;
+    private Node q;
+    private Node not_q;
 
-    /**
-     * sets the State of the FlipFlop to true
-     */
-    public void setState() {
-        isTrue = true;
+    public FlipFlop(String name, Node set, Node reset, Node q, Node not_q) {
+        super(name);
+        this.set = set;
+        this.reset = reset;
+        this.q = q;
+        this.not_q = not_q;
     }
 
-    /**
-     * resets the state of the FlipFLop to its default value
-     */
-    public void resetState() {
-        isTrue = false;
-    }
+    @Override
+    void calcState() {
+        if (reset != null && reset.getState()) {
+            state = false;
+        } else if (set != null && set.getState()){
+            state = true;
+        }
 
-    /**
-     * returns the output of the q
-     * @return value of q output
-     */
-    public boolean getQ () {
-        return isTrue;
-    }
-
-    /**
-     * returns the output of the inverted q
-     * @return value of inverted q output
-     */
-    public boolean getInvertedQ() {
-        return !isTrue;
     }
 
     public static void main(String[] args) {
-        FlipFlop f1 = new FlipFlop();
-
-        f1.setState();
-        System.out.println(f1.getQ());
-        System.out.println(f1.getInvertedQ());
-
-        f1.resetState();
-        System.out.println(f1.getQ());
-        System.out.println(f1.getInvertedQ());
-
 
     }
 }
