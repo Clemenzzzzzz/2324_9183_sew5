@@ -5,15 +5,29 @@
 package ue_00_schaltung;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class FlipFlop extends Component {
 
+    /**
+     * Current state of the FF
+     */
     private boolean state = false;
+    /**
+     * the set input
+     */
     public static final int SET = 0;
+    /**
+     * the reset input
+     */
     public static final int RESET = 1;
+    /**
+     * the q output
+     */
     public static final int Q = 0;
+    /**
+     * the not_q output
+     */
     public static final int NOT_Q = 1;
 
     public FlipFlop(String name, List<Node> inputs, List<Node> outputs) {
@@ -55,5 +69,9 @@ public class FlipFlop extends Component {
         System.out.println(q.getState());
         System.out.println(nq.getState());
 
+        rs.setState(false);
+        f.calcState();
+        System.out.println(q.getState());
+        System.out.println(nq.getState());
     }
 }

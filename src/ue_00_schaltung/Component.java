@@ -13,6 +13,9 @@ public abstract class Component {
         this.outputs = outputs;
     }
 
+    /**
+     * calculates the current State of the Flipflop on the basis od its nodes
+     */
     abstract void calcState();
 
 
