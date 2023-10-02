@@ -5,6 +5,14 @@
 package ue_00_schaltung;
 
 public class FlipFlop {
+    //TODO Konstruktur mit inputs und outputs
+    // Component irgendwie implementieren --> oder als Anmerkung oben
+    // mit Methode getInputPort
+    // r und s als konstanten
+    // also definieren, dass r der Eingang 0 oder 1 is und das gleiche mit s
+    // der Flipflop muss nicht funktionieren
+    // und Klassendiagramm anpassen
+
     private boolean isTrue = false;
 
     /**

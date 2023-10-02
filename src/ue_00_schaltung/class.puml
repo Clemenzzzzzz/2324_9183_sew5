@@ -22,23 +22,22 @@ abstract class Component {
 Input[] inputs
 Output[] outputs
 String name
+Component(inputs, outputs, name)
 calcState()
-send()
 connectInput()
 connectOutput()
-abstract calcState()
-toString()
 }
 
 class Taster{
 Output out
+Taster(output)
 press()
 release()
-
 }
 
 abstract class Node{
 boolean state
+Node(state)
 isState()
 setState()
 }
@@ -46,22 +45,24 @@ setState()
 
 class Input{
 Component comp
+Input(component)
 }
 
 class Output{
 List<Input> inputs
+Output(inputs)
 connect()
 }
 
 class FF{
 State state
+FF(state)
 calcState()
-handleFF()
 }
 
 class LED{
 boolean isOn
-
+LED(boolean)
 }
 
 Component <|-- FF
