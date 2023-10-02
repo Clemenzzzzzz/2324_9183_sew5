@@ -50,6 +50,7 @@ def create_files(excel_file):
 
     :return:
     """
+    lines = read_class_excel(excel_file)
     class_user_script = create_class_users_script(lines) #quasi ein String den man dann einfach in ein File schreibt
     with open('ressources/class_user_file.txt', 'w') as f1:
         f1.write(class_user_script)
