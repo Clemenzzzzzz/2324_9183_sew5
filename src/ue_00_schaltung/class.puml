@@ -19,13 +19,9 @@ size()
 }'/
 
 abstract class Component {
-Input[] inputs
-Output[] outputs
 String name
-Component(inputs, outputs, name)
+Component(name)
 calcState()
-connectInput()
-connectOutput()
 }
 
 class Taster{
@@ -38,8 +34,8 @@ release()
 abstract class Node{
 boolean state
 Node(state)
-isState()
-setState()
+getState()
+setState(boolean)
 }
 
 
@@ -51,12 +47,15 @@ Input(component)
 class Output{
 List<Input> inputs
 Output(inputs)
-connect()
 }
 
 class FF{
-State state
-FF(state)
+boolean state
+Input set
+Input reset
+Output q
+Output not_q
+FF(name, set, reset, q, not_q)
 calcState()
 }
 
