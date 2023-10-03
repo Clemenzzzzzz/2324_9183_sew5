@@ -20,7 +20,9 @@ size()
 
 abstract class Component {
 String name
-Component(name)
+List<Input> inputs
+List<Output> outputs
+Component(name, inputs, outputs)
 calcState()
 }
 
@@ -35,7 +37,7 @@ abstract class Node{
 boolean state
 Node(state)
 getState()
-setState(boolean)
+setState(state)
 }
 
 
@@ -51,17 +53,18 @@ Output(inputs)
 
 class FF{
 boolean state
-Input set
-Input reset
-Output q
-Output not_q
-FF(name, set, reset, q, not_q)
+int set
+int reset
+int q
+int not_q
+FF(name, inputs, outputs)
 calcState()
 }
 
 class LED{
 boolean isOn
 LED(boolean)
+calcState()
 }
 
 Component <|-- FF
