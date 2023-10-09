@@ -58,6 +58,7 @@ def create_files(excel_file):
     pass
 
 
+
 def create_class_users_script(lines):
     script = ''
     # zuerst Variablen für alle Werte die man so braucht
