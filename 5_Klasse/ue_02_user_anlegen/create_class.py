@@ -1,4 +1,5 @@
 import os.path
+import random
 
 from openpyxl import *
 
@@ -12,7 +13,7 @@ z = x.coordinate # "Name" der Zelle
 ws['A1'] = 42 # Schreiben mit Zellenname
 """
 
-
+user_to_password = []
 def read_name_excel(filename):
     """
     liest file ein und gibt es mit yield zeilenweise weiter
@@ -57,19 +58,28 @@ def create_files(excel_file):
     #print(line, 'ressources/class_user_script.txt')
     pass
 
+# TODO argparse zum ausführen
 
 
 def create_class_users_script(lines):
+    global user_to_password
     script = ''
     # zuerst Variablen für alle Werte die man so braucht
     # dann eine Zeile die in ein File schreibt, und wirklich die script Zeilen erstellt
-    script += ''
+    script += '' # TODO lehrer und Seminar erstellen
+    # TODO am anfang von script nötige verzeichnisse wie /home/klassen erstellen
+    systemgroups = ['cdrom', 'plugdev', 'sambashare']
+    random_chars = ['!', '%', '(', ')', ',', '.', '_', '-', '=', '^', '#']
+    home_shell = '/bin/bash'
     for line in lines:
         username = 'k' + str(line[0]).lower()
         #TODO Umlaute ersetzen
         gecos_field = str(line[0]).lower() + '_' + str(line[2]).lower()
         home_directory = '/home/klassen/' + username
-        #TODO am anfang von script nötige verzeichnisse wie /home/klassen erstellen
+        password = str(line[0]).lower() + random.choice(random_chars) + str(line[1]).lower() + random.choice(random_chars) + str(line[2]).lower() + random.choice(random_chars)
+        user_to_password.append((username, password))
+        # TODO was is mit der Klasse die zwei Räume hat wegen Raumnummer ?
+        # TODO actual Befehle jetzt aufbauen und in File schreiben
     return script
 
 
