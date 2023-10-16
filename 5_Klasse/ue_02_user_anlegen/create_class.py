@@ -89,7 +89,7 @@ def create_class_users_script(lines):
         user_to_password.append((username, password))
         script += f'groupadd {username}\n'
         script += f'useradd -d {home_directory} -c \"{gecos_field}\" -m -g {username} -G {systemgroups} -s {home_shell} {username}\n'
-        # TODO passwörter
+        script += f'echo {username}:{password} | chpasswd\n'
     return script
 
 
