@@ -60,11 +60,18 @@ def create_files(excel_file):
     with open('ressources/delete_class_script.sh', 'w') as f1:
         f1.write(class_delete_script)
     with open('ressources/user_password_list.txt', 'w') as f1:
-        list = ''
-        for user,password in user_to_password:
-            list += str(user) + ';' + str(password) + '\n'
+        list = get_user_to_passwd_list()
         f1.write(list)
     #print(line, 'ressources/class_user_script.txt')
+
+
+def get_user_to_passwd_list():
+    global user_to_password
+    list = ''
+    for user, password in user_to_password:
+        list += str(user) + ';' + str(password) + '\n'
+    return list
+
 
 # TODO argparse zum ausführen
 
