@@ -51,6 +51,7 @@ def create_files(excel_file):
 
     :return:
     """
+    global user_to_password
     lines = read_class_excel(excel_file)
     class_user_script = create_class_users_script(lines) #quasi ein String den man dann einfach in ein File schreibt
     class_delete_script = create_class_delete_script()
@@ -58,6 +59,11 @@ def create_files(excel_file):
         f1.write(class_user_script)
     with open('ressources/delete_class_script.sh', 'w') as f1:
         f1.write(class_delete_script)
+    with open('ressources/user_password_list.txt', 'w') as f1:
+        list = ''
+        for user,password in user_to_password:
+            list += str(user) + ';' + str(password) + '\n'
+        f1.write(list)
     #print(line, 'ressources/class_user_script.txt')
 
 # TODO argparse zum ausführen
