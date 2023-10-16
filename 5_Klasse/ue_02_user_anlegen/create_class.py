@@ -7,7 +7,7 @@ import os.path
 from logging.handlers import RotatingFileHandler
 import logging
 
-verbosity = False
+
 
 # Rotating_File_Handler --> immer, also verbose und quiet
 rot_file_logger = logging.getLogger('my_logger')
@@ -51,6 +51,7 @@ ws['A1'] = 42 # Schreiben mit Zellenname
 """
 
 user_to_password = []
+verbosity = False
 def read_name_excel(filename):
     """
     liest file ein und gibt es mit yield zeilenweise weiter
@@ -73,6 +74,7 @@ def read_name_excel(filename):
 
 def read_class_excel(filename):
     lines = []
+    print(f"Further filename: {filename}")
     wb = load_workbook(filename, read_only=True)
     ws = wb[wb.sheetnames[0]]
     for row in ws.iter_rows(min_row=7):
@@ -177,25 +179,30 @@ def get_user_to_passwd_list():
 
 #create_files('ressources/Klassenraeume_2023.xlsx')
 
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("filename", type=str, help="filename" ,required="True")
+    parser.add_argument("filename", type=str, help="filename")
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("-v", "--verbose", help="add log verbosity", action="store_true")
     group.add_argument("-q", "--quiet", help="turn off log verbosity", action="store_true")
 
     args = parser.parse_args()
-    if args.filename:
-        create_files(args.filename)
 
-
-    if args.verbosity:
-        global verbosity
+    if args.verbose:
+        #global verbosity
         verbosity = True
         print("Verbosity truned on")
 
     if args.quiet:
-        global verbosity
+        #global verbosity
         verbosity = False
         print('Verbosity turned off')
 
+    if args.filename:
+        print(args.filename)
+        create_files(args.filename)
+
+
+if __name__ == "__main__":
+    main()
