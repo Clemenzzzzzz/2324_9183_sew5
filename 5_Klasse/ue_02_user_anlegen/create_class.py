@@ -53,8 +53,11 @@ def create_files(excel_file):
     """
     lines = read_class_excel(excel_file)
     class_user_script = create_class_users_script(lines) #quasi ein String den man dann einfach in ein File schreibt
-    with open('ressources/class_user_file.sh', 'w') as f1:
+    class_delete_script = create_class_delete_script()
+    with open('ressources/create_class_script.sh', 'w') as f1:
         f1.write(class_user_script)
+    with open('ressources/delete_class_script.sh', 'w') as f1:
+        f1.write(class_delete_script)
     #print(line, 'ressources/class_user_script.txt')
 
 # TODO argparse zum ausführen
@@ -90,6 +93,15 @@ def create_class_users_script(lines):
         script += f'groupadd {username}\n'
         script += f'useradd -d {home_directory} -c \"{gecos_field}\" -m -g {username} -G {systemgroups} -s {home_shell} {username}\n'
         script += f'echo {username}:{password} | chpasswd\n'
+    return script
+
+
+def create_class_delete_script():
+    global user_to_password
+    script = ''
+    for user in user_to_password:
+        username = user[0]
+        script += f'userdel -r {username}\n'
     return script
 
 
