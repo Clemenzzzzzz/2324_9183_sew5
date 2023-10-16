@@ -1,7 +1,7 @@
-import os.path
 import random
 
-from openpyxl import *
+from openpyxl import load_workbook
+import os.path
 
 """ Beispiel Excel auslesen 
 wb = load_workbook(xlsfilename, read_only=True)
@@ -53,7 +53,7 @@ def create_files(excel_file):
     """
     lines = read_class_excel(excel_file)
     class_user_script = create_class_users_script(lines) #quasi ein String den man dann einfach in ein File schreibt
-    with open('ressources/class_user_file.txt', 'w') as f1:
+    with open('ressources/class_user_file.sh', 'w') as f1:
         f1.write(class_user_script)
     #print(line, 'ressources/class_user_script.txt')
 
@@ -82,6 +82,7 @@ def create_class_users_script(lines):
         username = username.replace('ä', 'ae')
         username = username.replace('ö', 'oe')
         username = username.replace('ü', 'ue')
+        username = username.replace('ß', 'ss')
         gecos_field = class_name + '_' + class_teacher
         home_directory = '/home/klassen/' + username
         password = class_name + random.choice(random_chars) + room_number + random.choice(random_chars) + class_teacher + random.choice(random_chars)
