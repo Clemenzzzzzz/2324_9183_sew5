@@ -56,7 +56,6 @@ def create_files(excel_file):
     with open('ressources/class_user_file.txt', 'w') as f1:
         f1.write(class_user_script)
     #print(line, 'ressources/class_user_script.txt')
-    pass
 
 # TODO argparse zum ausführen
 
@@ -76,19 +75,22 @@ def create_class_users_script(lines):
     script += 'mkdir /home/klassen'
     random_chars = ['!', '%', '(', ')', ',', '.', '_', '-', '=', '^', '#']
     for line in lines:
-        username = 'k' + str(line[0]).lower()
+        class_name = str(line[0]).lower()
+        room_number = (str(line[1]).lower())[:3]
+        class_teacher = str(line[2]).lower()
+        username = 'k' + class_name
         username = username.replace('ä', 'ae')
         username = username.replace('ö', 'oe')
         username = username.replace('ü', 'ue')
-        gecos_field = str(line[0]).lower() + '_' + str(line[2]).lower()
+        gecos_field = class_name + '_' + class_teacher
         home_directory = '/home/klassen/' + username
-        password = str(line[0]).lower() + random.choice(random_chars) + str(line[1]).lower() + random.choice(random_chars) + str(line[2]).lower() + random.choice(random_chars)
+        password = class_name + random.choice(random_chars) + room_number + random.choice(random_chars) + class_teacher + random.choice(random_chars)
         user_to_password.append((username, password))
-        # TODO was is mit der Klasse die zwei Räume hat wegen Raumnummer ?
-        # TODO actual Befehle jetzt aufbauen und in File schreiben
+        script += f'useradd -d {home_directory} -c \"{gecos_field}\" -m -g {username} -G {systemgroups} -s {home_shell} {username}'
+        # TODO was is mit Hauptgruppe --> also is das richtig so, muss man die vorher erstellen ?
     return script
 
 
-create_files('ressources/Namen.xlsx')
+create_files('ressources/Klassenraeume_2023.xlsx')
 
 
