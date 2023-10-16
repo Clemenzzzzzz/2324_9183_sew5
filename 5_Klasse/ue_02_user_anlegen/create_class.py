@@ -66,11 +66,16 @@ def create_class_users_script(lines):
     script = ''
     # zuerst Variablen für alle Werte die man so braucht
     # dann eine Zeile die in ein File schreibt, und wirklich die script Zeilen erstellt
-    script += '' # TODO lehrer und Seminar erstellen
-    # TODO am anfang von script nötige verzeichnisse wie /home/klassen erstellen
-    systemgroups = ['cdrom', 'plugdev', 'sambashare']
-    random_chars = ['!', '%', '(', ')', ',', '.', '_', '-', '=', '^', '#']
+    systemgroups = 'cdrom,plugdev,sambashare'
     home_shell = '/bin/bash'
+    script += 'groupadd lehrer'
+    script += 'groupadd seminar'
+    script += 'groupadd klasse'
+    script += f'useradd -d /home/lehrer -c \"Lehrer\" -m -g lehrer -G {systemgroups} -s {home_shell} lehrer'
+    script += f'useradd -d /home/seminar -c \"Seminar\" -m -g seminar -G {systemgroups} -s {home_shell} seminar'
+    script += 'mkdir /home/klassen'
+    # TODO am anfang von script nötige verzeichnisse wie /home/klassen erstellen
+    random_chars = ['!', '%', '(', ')', ',', '.', '_', '-', '=', '^', '#']
     for line in lines:
         username = 'k' + str(line[0]).lower()
         #TODO Umlaute ersetzen
