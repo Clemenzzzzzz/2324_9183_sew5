@@ -67,12 +67,12 @@ def create_class_users_script(lines):
     # dann eine Zeile die in ein File schreibt, und wirklich die script Zeilen erstellt
     systemgroups = 'cdrom,plugdev,sambashare'
     home_shell = '/bin/bash'
-    script += 'groupadd lehrer'
-    script += 'groupadd seminar'
-    script += 'groupadd klasse'
-    script += f'useradd -d /home/lehrer -c \"Lehrer\" -m -g lehrer -G {systemgroups} -s {home_shell} lehrer'
-    script += f'useradd -d /home/seminar -c \"Seminar\" -m -g seminar -G {systemgroups} -s {home_shell} seminar'
-    script += 'mkdir /home/klassen'
+    script += 'groupadd lehrer\n'
+    script += 'groupadd seminar\n'
+    script += 'groupadd klasse\n'
+    script += f'useradd -d /home/lehrer -c \"Lehrer\" -m -g lehrer -G {systemgroups} -s {home_shell} lehrer\n'
+    script += f'useradd -d /home/seminar -c \"Seminar\" -m -g seminar -G {systemgroups} -s {home_shell} seminar\n'
+    script += 'mkdir /home/klassen\n'
     random_chars = ['!', '%', '(', ')', ',', '.', '_', '-', '=', '^', '#']
     for line in lines:
         class_name = str(line[0]).lower()
@@ -87,8 +87,9 @@ def create_class_users_script(lines):
         home_directory = '/home/klassen/' + username
         password = class_name + random.choice(random_chars) + room_number + random.choice(random_chars) + class_teacher + random.choice(random_chars)
         user_to_password.append((username, password))
-        script += f'useradd -d {home_directory} -c \"{gecos_field}\" -m -g {username} -G {systemgroups} -s {home_shell} {username}'
-        # TODO was is mit Hauptgruppe --> also is das richtig so, muss man die vorher erstellen ?
+        script += f'groupadd {username}\n'
+        script += f'useradd -d {home_directory} -c \"{gecos_field}\" -m -g {username} -G {systemgroups} -s {home_shell} {username}\n'
+        # TODO passwörter
     return script
 
 
