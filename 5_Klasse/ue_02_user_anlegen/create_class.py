@@ -74,11 +74,12 @@ def create_class_users_script(lines):
     script += f'useradd -d /home/lehrer -c \"Lehrer\" -m -g lehrer -G {systemgroups} -s {home_shell} lehrer'
     script += f'useradd -d /home/seminar -c \"Seminar\" -m -g seminar -G {systemgroups} -s {home_shell} seminar'
     script += 'mkdir /home/klassen'
-    # TODO am anfang von script nötige verzeichnisse wie /home/klassen erstellen
     random_chars = ['!', '%', '(', ')', ',', '.', '_', '-', '=', '^', '#']
     for line in lines:
         username = 'k' + str(line[0]).lower()
-        #TODO Umlaute ersetzen
+        username = username.replace('ä', 'ae')
+        username = username.replace('ö', 'oe')
+        username = username.replace('ü', 'ue')
         gecos_field = str(line[0]).lower() + '_' + str(line[2]).lower()
         home_directory = '/home/klassen/' + username
         password = str(line[0]).lower() + random.choice(random_chars) + str(line[1]).lower() + random.choice(random_chars) + str(line[2]).lower() + random.choice(random_chars)
