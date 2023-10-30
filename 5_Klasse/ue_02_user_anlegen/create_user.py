@@ -1,7 +1,10 @@
 import argparse
 import random
+import re
 import sys
 
+import unicodedata
+import unidecode
 from openpyxl import load_workbook
 import os.path
 
@@ -67,16 +70,17 @@ def create_files(excel_file):
     lines = read_name_excel(excel_file)
     real_user_script = create_real_users_script(lines) #quasi ein String den man dann einfach in ein File schreibt
     real_delete_script = create_real_delete_script()
-    with open('create_class_script.sh', 'w') as f1:
+    with open('create_user_script.sh', 'w') as f1:
+        print(real_user_script)
         f1.write(real_user_script)
-        logger.info("class_user_script created")
+        logger.info("real_user_script created")
         if verbosity:
-            print('class_user_script created')
-    with open('delete_class_script.sh', 'w') as f1:
+            print('real_user_script created')
+    with open('delete_user_script.sh', 'w') as f1:
         f1.write(real_delete_script)
-        logger.info("class_delete_script created")
+        logger.info("real_delete_script created")
         if verbosity:
-            print("class_delete_script created")
+            print("real_delete_script created")
     with open('user_password_list.txt', 'w') as f1:
         f1.write(get_user_to_passwd_list())
         logger.info("user_password_list created")
@@ -104,23 +108,39 @@ def create_real_users_script(lines):
         lastname = str(line[1])
         group = str(line[2])
         user_class = str(line[3])
-        username = lastname.lower #TODO leerzeichen in einem Namen müssen durch unterstrich ersetzt werden
-        username = username.replace('ä', 'ae') #TODO auslagern und akzente entfernen
-        username = username.replace('ö', 'oe')
-        username = username.replace('ü', 'ue')
-        username = username.replace('ß', 'ss')
+        username = get_valid_username(lastname)
         gecos_field = firstname + '_' + lastname
         home_directory = '/home/' + username
         password = username + random.choice(random_chars) + group + random.choice(random_chars) + user_class + random.choice(random_chars)
         user_to_password.append((username, password)) #TODO was is mit doppelten Namen
         #script += f'groupadd {username}\n'
-        script += f'useradd -d {home_directory} -c \"{gecos_field}\" -m -g {username} -G {systemgroups, ',', group} -s {home_shell} {username}\n'
+        script += f'useradd -d {home_directory} -c \"{gecos_field}\" -m -g {username} -G {systemgroups},{group} -s {home_shell} {username}\n'
         script += f'echo {username}:{password} | chpasswd\n'
         logger.info(f'User {username} with password created!')
         if verbosity:
             script += f'echo User {username} with password created!\n'
             print('echo User {username} with password created!')
     return script
+
+
+def get_valid_username(lastname):
+    username = lastname.lower()
+    username = shave_marks(username)
+    #username = unidecode.unidecode(username)
+    username = username.replace(' ', '_')
+    username = username.replace('ä', 'ae') #TODO weirde Charactere (siehe letzten beiden Namen) --> vor allem der bug grade
+    username = username.replace('ö', 'oe')
+    username = username.replace('ü', 'ue')
+    username = username.replace('ß', 'ss')
+    username = re.sub(r'[^a-z0-9_]', '', username)
+    return username
+
+def shave_marks(txt):
+    """Remove all diacritic marks"""
+    norm_txt = unicodedata.normalize('NFD', txt)
+    shaved = ''.join(c for c in norm_txt if not unicodedata.combining(c))
+    return unicodedata.normalize('NFC', shaved)
+
 
 # TODO tests siehe angbabe
 
