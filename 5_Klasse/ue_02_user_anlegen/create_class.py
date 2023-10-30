@@ -1,5 +1,6 @@
 import argparse
 import random
+import sys
 
 from openpyxl import load_workbook
 import os.path
@@ -7,36 +8,22 @@ import os.path
 from logging.handlers import RotatingFileHandler
 import logging
 
-# TODO logger buggt noch
-# TODO was is der none user
-
-# Rotating_File_Handler --> immer, also verbose und quiet
-rot_file_logger = logging.getLogger('my_logger')
-handler = RotatingFileHandler('my_log.log', maxBytes=10000, backupCount=5)
-rot_file_logger.addHandler(handler)
-
-# rot_file_logger.info('This message will be logged to my_log.log')
 
 
 
+logger = logging.getLogger(__name__)
+handler = logging.handlers.RotatingFileHandler("create_class.log", maxBytes=10000, backupCount=5)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
 
-# Stream_Handler --> nur bei verbose
-logger = logging.getLogger('my_stream_logger')
-logger.setLevel(logging.INFO)
+stream_handler = logging.StreamHandler(sys.stdout)
+stream_handler.setFormatter(formatter)
 
-# Create a StreamHandler and set its level to DEBUG
-stream_handler = logging.StreamHandler()
-stream_handler.setLevel(logging.DEBUG)
-
-# Add the handler to the logger
+logger.addHandler(handler)
 logger.addHandler(stream_handler)
 
-# Log messages
-#logger.debug('This is a debug message')
-#logger.info('This is an info message')
-#logger.warning('This is a warning message')
-#logger.error('This is an error message')
-
+verbose = False
+quiet = False
 
 
 
@@ -77,11 +64,10 @@ def read_class_excel(filename):
     lines = []
     wb = load_workbook(filename, read_only=True)
     ws = wb[wb.sheetnames[0]]
-    for row in ws.iter_rows(min_row=7):
-        a = row[0]  # Element in der Zeile lesen -- Objekt
-        b = row[1]
-        c = row[2]
-        lines.append((a.value, b.value, c.value))
+    for row in ws.iter_rows(min_row=2):
+        if row[0].value == None:
+            break
+        lines.append((row[0].value, row[1].value, row[2].value))
     return lines
 
 def create_files(excel_file):
@@ -92,24 +78,25 @@ def create_files(excel_file):
     """
     global user_to_password
     global verbosity
+    global logger
     lines = read_class_excel(excel_file)
     class_user_script = create_class_users_script(lines) #quasi ein String den man dann einfach in ein File schreibt
     class_delete_script = create_class_delete_script()
-    with open('ressources/create_class_script.sh', 'w') as f1:
+    with open('create_class_script.sh', 'w') as f1:
         f1.write(class_user_script)
+        logger.info("class_user_script created")
         if verbosity:
-            logger.info('class_user_script created')
-        rot_file_logger.info(f'class_user_script created')
-    with open('ressources/delete_class_script.sh', 'w') as f1:
+            print('class_user_script created')
+    with open('delete_class_script.sh', 'w') as f1:
         f1.write(class_delete_script)
+        logger.info("class_delete_script created")
         if verbosity:
-            logger.info('class_delete_script created')
-        rot_file_logger.info(f'class_delete_script created')
-    with open('ressources/user_password_list.txt', 'w') as f1:
+            print("class_delete_script created")
+    with open('user_password_list.txt', 'w') as f1:
         f1.write(get_user_to_passwd_list())
+        logger.info("user_password_list created")
         if verbosity:
-            logger.info('class_delete_script created')
-        rot_file_logger.info(f'lass_delete_script created')
+            print("user_password_list created")
     #print(line, 'ressources/class_user_script.txt')
 
 
@@ -119,6 +106,7 @@ def create_files(excel_file):
 def create_class_users_script(lines):
     global user_to_password
     global verbosity
+    global logger
     script = ''
     # zuerst Variablen für alle Werte die man so braucht
     # dann eine Zeile die in ein File schreibt, und wirklich die script Zeilen erstellt
@@ -147,39 +135,43 @@ def create_class_users_script(lines):
         #script += f'groupadd {username}\n'
         script += f'useradd -d {home_directory} -c \"{gecos_field}\" -m -g {username} -G {systemgroups} -s {home_shell} {username}\n'
         script += f'echo {username}:{password} | chpasswd\n'
-        rot_file_logger.info(f'User {username} with password created!')
+        logger.info(f'User {username} with password created!')
         if verbosity:
-            logger.info(f'User {username} with password created!')
+            print(f'User {username} with password created!')
     return script
 
 
 def create_class_delete_script():
     global user_to_password
     global verbosity
+    global logger
     script = ''
     for user in user_to_password:
         username = user[0]
         script += f'userdel -r {username}\n'
-        rot_file_logger.info(f'User {username} with password deleted!')
+        logger.info(f'User {username} with password deleted!')
         if verbosity:
-            logger.info(f'User {username} with password deleted!')
+            print(f'User {username} with password deleted!')
     return script
 
 def get_user_to_passwd_list():
     global user_to_password
     global verbosity
+    global logger
     list = ''
     for user, password in user_to_password:
         list += str(user) + ';' + str(password) + '\n'
-        rot_file_logger.info(f'User {user} and its password in user_to_password list')
+        logger.info(f'User {user} and its password in user_to_password list')
         if verbosity:
-            logger.info(f'User {user} and its password in user_to_password list')
+            print(f'User {user} and its password in user_to_password list')
     return list
 
 #create_files('ressources/Klassenraeume_2023.xlsx')
 
 
 def main():
+    global verbosity
+    global logger
     parser = argparse.ArgumentParser()
     parser.add_argument("filename", type=str, help="filename")
     group = parser.add_mutually_exclusive_group(required=True)
@@ -187,7 +179,7 @@ def main():
     group.add_argument("-q", "--quiet", help="turn off log verbosity", action="store_true")
 
     args = parser.parse_args()
-
+    logger.setLevel(logging.INFO)
     if args.verbose:
         #global verbosity
         verbosity = True
@@ -199,7 +191,6 @@ def main():
         print('Verbosity turned off')
 
     if args.filename:
-        print(args.filename)
         create_files(args.filename)
 
 
