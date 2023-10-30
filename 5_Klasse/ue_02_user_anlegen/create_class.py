@@ -7,7 +7,8 @@ import os.path
 from logging.handlers import RotatingFileHandler
 import logging
 
-
+# TODO logger buggt noch
+# TODO was is der none user
 
 # Rotating_File_Handler --> immer, also verbose und quiet
 rot_file_logger = logging.getLogger('my_logger')
@@ -74,7 +75,6 @@ def read_name_excel(filename):
 
 def read_class_excel(filename):
     lines = []
-    print(f"Further filename: {filename}")
     wb = load_workbook(filename, read_only=True)
     ws = wb[wb.sheetnames[0]]
     for row in ws.iter_rows(min_row=7):
@@ -114,7 +114,6 @@ def create_files(excel_file):
 
 
 
-# TODO argparse zum ausführen
 
 
 def create_class_users_script(lines):
