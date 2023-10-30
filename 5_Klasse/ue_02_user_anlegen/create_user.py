@@ -24,6 +24,7 @@ logger.addHandler(stream_handler)
 
 
 
+
 """ Beispiel Excel auslesen 
 wb = load_workbook(xlsfilename, read_only=True)
 ws = wb[wb.sheetnames[0]]
@@ -36,15 +37,22 @@ ws['A1'] = 42 # Schreiben mit Zellenname
 
 user_to_password = []
 verbosity = False
+def read_name_excel(filename):
+    """
+    liest file ein und gibt es mit yield zeilenweise weiter
 
-def read_class_excel(filename):
+    :param filename:
+    :return:
+    """
     lines = []
     wb = load_workbook(filename, read_only=True)
     ws = wb[wb.sheetnames[0]]
     for row in ws.iter_rows(min_row=2):
         if row[0].value == None:
             break
-        lines.append((row[0].value, row[1].value, row[2].value))
+        #z = x.coordinate  # "Name" der Zelle
+        lines.append((row[0].value, row[0].value, row[0].value, row[0].value))
+    #ws['A1'] = 42  # Schreiben mit Zellenname
     return lines
 
 def create_files(excel_file):
@@ -56,16 +64,16 @@ def create_files(excel_file):
     global user_to_password
     global verbosity
     global logger
-    lines = read_class_excel(excel_file)
-    class_user_script = create_class_users_script(lines) #quasi ein String den man dann einfach in ein File schreibt
-    class_delete_script = create_class_delete_script()
+    lines = read_name_excel(excel_file)
+    real_user_script = create_real_users_script(lines) #quasi ein String den man dann einfach in ein File schreibt
+    real_delete_script = create_real_delete_script()
     with open('create_class_script.sh', 'w') as f1:
-        f1.write(class_user_script)
+        f1.write(real_user_script)
         logger.info("class_user_script created")
         if verbosity:
             print('class_user_script created')
     with open('delete_class_script.sh', 'w') as f1:
-        f1.write(class_delete_script)
+        f1.write(real_delete_script)
         logger.info("class_delete_script created")
         if verbosity:
             print("class_delete_script created")
@@ -80,7 +88,7 @@ def create_files(excel_file):
 
 
 
-def create_class_users_script(lines):
+def create_real_users_script(lines):
     global user_to_password
     global verbosity
     global logger
@@ -89,28 +97,24 @@ def create_class_users_script(lines):
     # dann eine Zeile die in ein File schreibt, und wirklich die script Zeilen erstellt
     systemgroups = 'cdrom,plugdev,sambashare'
     home_shell = '/bin/bash'
-    script += 'groupadd lehrer\n'
-    script += 'groupadd seminar\n'
-    script += 'groupadd klasse\n'
-    script += f'useradd -d /home/lehrer -c \"Lehrer\" -m -g lehrer -G {systemgroups} -s {home_shell} lehrer\n'
-    script += f'useradd -d /home/seminar -c \"Seminar\" -m -g seminar -G {systemgroups} -s {home_shell} seminar\n'
-    script += 'mkdir /home/klassen\n'
+    script += 'mkdir /home\n'
     random_chars = ['!', '%', '\(', '\)', ',', '.', '_', '-', '=', '^', '#']
     for line in lines:
-        class_name = str(line[0]).lower()
-        room_number = (str(line[1]).lower())[:3]
-        class_teacher = str(line[2]).lower()
-        username = 'k' + class_name
-        username = username.replace('ä', 'ae')
+        firstname = str(line[0])
+        lastname = str(line[1])
+        group = str(line[2])
+        user_class = str(line[3])
+        username = lastname.lower #TODO leerzeichen in einem Namen müssen durch unterstrich ersetzt werden
+        username = username.replace('ä', 'ae') #TODO auslagern und akzente entfernen
         username = username.replace('ö', 'oe')
         username = username.replace('ü', 'ue')
         username = username.replace('ß', 'ss')
-        gecos_field = class_name + '_' + class_teacher
-        home_directory = '/home/klassen/' + username
-        password = class_name + random.choice(random_chars) + room_number + random.choice(random_chars) + class_teacher + random.choice(random_chars)
-        user_to_password.append((username, password))
+        gecos_field = firstname + '_' + lastname
+        home_directory = '/home/' + username
+        password = username + random.choice(random_chars) + group + random.choice(random_chars) + user_class + random.choice(random_chars)
+        user_to_password.append((username, password)) #TODO was is mit doppelten Namen
         #script += f'groupadd {username}\n'
-        script += f'useradd -d {home_directory} -c \"{gecos_field}\" -m -g {username} -G {systemgroups} -s {home_shell} {username}\n'
+        script += f'useradd -d {home_directory} -c \"{gecos_field}\" -m -g {username} -G {systemgroups, ',', group} -s {home_shell} {username}\n'
         script += f'echo {username}:{password} | chpasswd\n'
         logger.info(f'User {username} with password created!')
         if verbosity:
@@ -118,8 +122,9 @@ def create_class_users_script(lines):
             print('echo User {username} with password created!')
     return script
 
+# TODO tests siehe angbabe
 
-def create_class_delete_script():
+def create_real_delete_script():
     global user_to_password
     global verbosity
     global logger
@@ -133,7 +138,7 @@ def create_class_delete_script():
             print('User {username} with password deleted!')
     return script
 
-def get_user_to_passwd_list():
+def get_user_to_passwd_list(): #TODO das auch als excel
     global user_to_password
     global verbosity
     global logger
