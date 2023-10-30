@@ -9,7 +9,7 @@ from logging.handlers import RotatingFileHandler
 import logging
 
 
-
+# TODO logging bei verbose auch im File
 
 logger = logging.getLogger(__name__)
 handler = logging.handlers.RotatingFileHandler("create_class.log", maxBytes=10000, backupCount=5)
@@ -137,7 +137,8 @@ def create_class_users_script(lines):
         script += f'echo {username}:{password} | chpasswd\n'
         logger.info(f'User {username} with password created!')
         if verbosity:
-            print(f'User {username} with password created!')
+            script += f'echo User {username} with password created!\n'
+            print('echo User {username} with password created!')
     return script
 
 
@@ -151,7 +152,8 @@ def create_class_delete_script():
         script += f'userdel -r {username}\n'
         logger.info(f'User {username} with password deleted!')
         if verbosity:
-            print(f'User {username} with password deleted!')
+            script += f'echo User {username} with password deleted!\n'
+            print('User {username} with password deleted!')
     return script
 
 def get_user_to_passwd_list():
