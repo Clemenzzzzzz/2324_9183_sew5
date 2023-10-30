@@ -118,7 +118,7 @@ def create_class_users_script(lines):
     script += f'useradd -d /home/lehrer -c \"Lehrer\" -m -g lehrer -G {systemgroups} -s {home_shell} lehrer\n'
     script += f'useradd -d /home/seminar -c \"Seminar\" -m -g seminar -G {systemgroups} -s {home_shell} seminar\n'
     script += 'mkdir /home/klassen\n'
-    random_chars = ['!', '%', '(', ')', ',', '.', '_', '-', '=', '^', '#']
+    random_chars = ['!', '%', '\(', '\)', ',', '.', '_', '-', '=', '^', '#']
     for line in lines:
         class_name = str(line[0]).lower()
         room_number = (str(line[1]).lower())[:3]
