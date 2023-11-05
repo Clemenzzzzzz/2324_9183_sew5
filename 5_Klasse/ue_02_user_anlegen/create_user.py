@@ -2,6 +2,7 @@ import argparse
 import random
 import re
 import sys
+from collections import Counter
 
 import unicodedata
 import unidecode
@@ -39,6 +40,7 @@ ws['A1'] = 42 # Schreiben mit Zellenname
 """
 
 user_to_password = []
+existing_user_names = []
 verbosity = False
 def read_name_excel(filename):
     """
@@ -54,7 +56,7 @@ def read_name_excel(filename):
         if row[0].value == None:
             break
         #z = x.coordinate  # "Name" der Zelle
-        lines.append((row[0].value, row[0].value, row[0].value, row[0].value))
+        lines.append((row[0].value, row[1].value, row[2].value, row[3].value))
     #ws['A1'] = 42  # Schreiben mit Zellenname
     return lines
 
@@ -70,18 +72,18 @@ def create_files(excel_file):
     lines = read_name_excel(excel_file)
     real_user_script = create_real_users_script(lines) #quasi ein String den man dann einfach in ein File schreibt
     real_delete_script = create_real_delete_script()
-    with open('create_user_script.sh', 'w') as f1:
+    with open('create_user_script.sh', 'w', encoding='utf-8') as f1:
         print(real_user_script)
         f1.write(real_user_script)
         logger.info("real_user_script created")
         if verbosity:
             print('real_user_script created')
-    with open('delete_user_script.sh', 'w') as f1:
+    with open('delete_user_script.sh', 'w', encoding='utf-8') as f1:
         f1.write(real_delete_script)
         logger.info("real_delete_script created")
         if verbosity:
             print("real_delete_script created")
-    with open('user_password_list.txt', 'w') as f1:
+    with open('user_password_list.txt', 'w', encoding='utf-8') as f1:
         f1.write(get_user_to_passwd_list())
         logger.info("user_password_list created")
         if verbosity:
@@ -104,15 +106,25 @@ def create_real_users_script(lines):
     script += 'mkdir /home\n'
     random_chars = ['!', '%', '\(', '\)', ',', '.', '_', '-', '=', '^', '#']
     for line in lines:
+        print('hier is die line')
+        print(line)
         firstname = str(line[0])
         lastname = str(line[1])
         group = str(line[2])
         user_class = str(line[3])
         username = get_valid_username(lastname)
+        if username in existing_user_names:
+            index = 1
+            while f'{username}{index}' in existing_user_names:
+                index += 1
+            username = username + str(index)
+            existing_user_names.append(username)
+        else:
+            existing_user_names.append(username)
         gecos_field = firstname + '_' + lastname
         home_directory = '/home/' + username
         password = username + random.choice(random_chars) + group + random.choice(random_chars) + user_class + random.choice(random_chars)
-        user_to_password.append((username, password)) #TODO was is mit doppelten Namen
+        user_to_password.append((username, password))
         #script += f'groupadd {username}\n'
         script += f'useradd -d {home_directory} -c \"{gecos_field}\" -m -g {username} -G {systemgroups},{group} -s {home_shell} {username}\n'
         script += f'echo {username}:{password} | chpasswd\n'
