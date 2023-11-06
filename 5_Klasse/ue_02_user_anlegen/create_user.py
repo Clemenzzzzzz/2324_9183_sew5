@@ -113,14 +113,7 @@ def create_real_users_script(lines):
         group = str(line[2])
         user_class = str(line[3])
         username = get_valid_username(lastname)
-        if username in existing_user_names:
-            index = 1
-            while f'{username}{index}' in existing_user_names:
-                index += 1
-            username = username + str(index)
-            existing_user_names.append(username)
-        else:
-            existing_user_names.append(username)
+        username = handle_double_users(username)
         gecos_field = firstname + '_' + lastname
         home_directory = '/home/' + username
         password = username + random.choice(random_chars) + group + random.choice(
@@ -136,21 +129,63 @@ def create_real_users_script(lines):
     return script
 
 
+def handle_double_users(username):
+    """
+    method to check if a username is already there
+
+    :param username: username that needs to be checkes
+    :return: the new username if a username is double
+    >>> user1 = handle_double_users('august')
+    >>> user2 = handle_double_users('clemens')
+    >>> user3 = handle_double_users('august')
+    >>> user4 = handle_double_users('august')
+    >>> print(user1)
+    august
+    >>> print(user2)
+    clemens
+    >>> print(user3)
+    august1
+    >>> print(user4)
+    august2
+    """
+    if username in existing_user_names:
+        index = 1
+        while f'{username}{index}' in existing_user_names:
+            index += 1
+        username = username + str(index)
+        existing_user_names.append(username)
+    else:
+        existing_user_names.append(username)
+    return username
+
+
 def get_valid_username(lastname):
     """
     changes a lastname to a valid username in the script
 
     :param lastname: the lastname as given in the excel file
     :return: a valid username as string
+    >>> user1 = get_valid_username('Hodina')
+    >>> user2 = get_valid_username('Hörandl')
+    >>> user3 = get_valid_username('IRÉNÉE')
+    >>> user4 = get_valid_username('Núñez Gómez')
+    >>> print(user1)
+    hodina
+    >>> print(user2)
+    hoerandl
+    >>> print(user3)
+    irenee
+    >>> print(user4)
+    nunez_gomez
     """
     username = lastname.lower()
-    username = shave_marks(username)
     # username = unidecode.unidecode(username)
     username = username.replace(' ', '_')
     username = username.replace('ä', 'ae')
     username = username.replace('ö', 'oe')
     username = username.replace('ü', 'ue')
     username = username.replace('ß', 'ss')
+    username = shave_marks(username)
     username = re.sub(r'[^a-z0-9_]', '', username)
     return username
 
