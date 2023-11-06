@@ -7,6 +7,9 @@ from collections import Counter
 import unicodedata
 import unidecode
 from openpyxl import load_workbook
+from openpyxl import Workbook
+from openpyxl import workbook
+from openpyxl import worksheet
 import os.path
 
 from logging.handlers import RotatingFileHandler
@@ -189,6 +192,7 @@ def get_valid_username(lastname):
     username = re.sub(r'[^a-z0-9_]', '', username)
     return username
 
+# TODO typehints
 
 def shave_marks(txt):
     """Remove all diacritic marks"""
@@ -197,7 +201,6 @@ def shave_marks(txt):
     return unicodedata.normalize('NFC', shaved)
 
 
-# TODO tests siehe angbabe
 
 def create_real_delete_script():
     """
@@ -219,7 +222,20 @@ def create_real_delete_script():
     return script
 
 
-def get_user_to_passwd_list():  # TODO das auch als excel
+def create_credentials():
+    """
+    Creates an excel sheet for storing credentials
+    :return:
+    """
+    logger.info("Creating credentials sheet")
+    workbook = Workbook()
+    sheet = workbook.active
+
+    sheet["A1"] = "Username"
+    sheet["B1"] = "Password"
+    return workbook, sheet
+
+def get_user_to_passwd_list():
     """
     writes a list for every user with its password
 
@@ -229,12 +245,40 @@ def get_user_to_passwd_list():  # TODO das auch als excel
     global verbosity
     global logger
     list = ''
+    worksheet, sheet = create_credentials()
+    row = 2
     for user, password in user_to_password:
         list += str(user) + ';' + str(password) + '\n'
+        add_credentials(sheet, user, password, row)
+        row += 1
         logger.info(f'User {user} and its password in user_to_password list')
         if verbosity:
             print(f'User {user} and its password in user_to_password list')
+    save_credentials(worksheet)
     return list
+
+
+def add_credentials(sheet, name, pwd, row):
+    """
+    Adds credentials to the excel sheet
+    :param sheet:
+    :param i:
+    :param row:
+    :param pwd:
+    :return:
+    """
+    logger.info(f"Adding credentials for user: {name}")
+    sheet[f"A{row}"] = name
+    sheet[f"B{row}"] = pwd
+
+def save_credentials(workbook):
+    """
+    Saves credentials to the excel sheet
+    :param workbook:
+    :return:
+    """
+    logger.info("Saving credentials to file")
+    workbook.save("user_passwd_list.xlsx")
 
 
 # create_files('ressources/Klassenraeume_2023.xlsx')
