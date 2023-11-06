@@ -33,7 +33,7 @@ user_to_password = []
 verbosity = False
 
 
-def read_class_excel(filename):
+def read_class_excel(filename: str) -> str:
     """
         reads an excel file and gives back the values of each line
 
@@ -50,7 +50,7 @@ def read_class_excel(filename):
     return lines
 
 
-def create_files(excel_file):
+def create_files(excel_file: str) -> None:
     """
     creates and writes the required Files
 
@@ -80,7 +80,7 @@ def create_files(excel_file):
     # print(line, 'ressources/class_user_script.txt')
 
 
-def create_class_users_script(lines):
+def create_class_users_script(lines: str) -> str:
     """
         creates the actual bash script to build the required users
 
@@ -126,7 +126,7 @@ def create_class_users_script(lines):
     return script
 
 
-def create_class_delete_script():
+def create_class_delete_script() -> str:
     """
         creates the delete script matching the create script
 
@@ -146,7 +146,7 @@ def create_class_delete_script():
     return script
 
 
-def get_user_to_passwd_list():
+def get_user_to_passwd_list() -> str:
     """
         writes a list for every user with its password
 

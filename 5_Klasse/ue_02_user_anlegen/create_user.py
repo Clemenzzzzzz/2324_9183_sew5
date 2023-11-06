@@ -41,7 +41,7 @@ existing_user_names = []
 verbosity = False
 
 
-def read_name_excel(filename):
+def read_name_excel(filename: str) -> []:
     """
     reads an excel file and gives back the values of each line
 
@@ -60,7 +60,7 @@ def read_name_excel(filename):
     return lines
 
 
-def create_files(excel_file):
+def create_files(excel_file:str) -> None:
     """
     creates and writes the required Files
 
@@ -91,7 +91,7 @@ def create_files(excel_file):
     # print(line, 'ressources/class_user_script.txt')
 
 
-def create_real_users_script(lines):
+def create_real_users_script(lines: str) -> str:
     """
     creates the actual bash script to build the required users
 
@@ -132,7 +132,7 @@ def create_real_users_script(lines):
     return script
 
 
-def handle_double_users(username):
+def handle_double_users(username: str) -> str:
     """
     method to check if a username is already there
 
@@ -162,7 +162,7 @@ def handle_double_users(username):
     return username
 
 
-def get_valid_username(lastname):
+def get_valid_username(lastname: str) -> str:
     """
     changes a lastname to a valid username in the script
 
@@ -194,7 +194,7 @@ def get_valid_username(lastname):
 
 # TODO typehints
 
-def shave_marks(txt):
+def shave_marks(txt: str) -> str:
     """Remove all diacritic marks"""
     norm_txt = unicodedata.normalize('NFD', txt)
     shaved = ''.join(c for c in norm_txt if not unicodedata.combining(c))
@@ -202,7 +202,7 @@ def shave_marks(txt):
 
 
 
-def create_real_delete_script():
+def create_real_delete_script() -> str:
     """
     creates the delete script matching the create script
 
@@ -235,7 +235,7 @@ def create_credentials():
     sheet["B1"] = "Password"
     return workbook, sheet
 
-def get_user_to_passwd_list():
+def get_user_to_passwd_list() -> str:
     """
     writes a list for every user with its password
 
@@ -258,7 +258,7 @@ def get_user_to_passwd_list():
     return list
 
 
-def add_credentials(sheet, name, pwd, row):
+def add_credentials(sheet, name: str, pwd:str, row:int):
     """
     Adds credentials to the excel sheet
     :param sheet:
