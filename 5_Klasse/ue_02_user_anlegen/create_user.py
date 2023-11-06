@@ -192,7 +192,6 @@ def get_valid_username(lastname: str) -> str:
     username = re.sub(r'[^a-z0-9_]', '', username)
     return username
 
-# TODO typehints
 
 def shave_marks(txt: str) -> str:
     """Remove all diacritic marks"""

@@ -186,7 +186,7 @@ def main():
     if args.verbose:
         # global verbosity
         verbosity = True
-        print("Verbosity truned on")
+        print("Verbosity turned on")
 
     if args.quiet:
         # global verbosity
