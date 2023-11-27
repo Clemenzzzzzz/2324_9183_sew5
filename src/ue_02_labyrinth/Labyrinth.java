@@ -83,7 +83,13 @@ public class Labyrinth {
 	 * @param lab
 	 */
 	public static void printLabyrinth(char[][] lab) {
-		System.out.println(Arrays.deepToString(lab));
+		for (int i = 0; i < lab.length; i++) {
+			for (int j = 0; j < lab[i].length; j++) {
+				System.out.print(lab[i][j]);
+			}
+			System.out.println();
+		}
+		System.out.println();
 	}
 
 
@@ -95,16 +101,40 @@ public class Labyrinth {
 	 * @throws InterruptedException    für die verlangsamte Ausgabe mit sleep()
 	 */
 	public static boolean suchen(int zeile, int spalte, char[][] lab) throws InterruptedException {
-		// TODO Code fehlt noch
 		// nur lab[zeile][spalte] betrachten
+		if (lab[zeile][spalte] == 'A'){
+			return true;
+		}
+		lab[zeile][spalte] = 'X';
+		printLabyrinth(lab);
+		if (lab[zeile + 1][spalte] != '#' && lab[zeile + 1][spalte] != 'X'){
+			if (suchen(zeile + 1, spalte, lab)){
+				return true;
+			};
+		}
+		if (lab[zeile][spalte + 1] != '#' && lab[zeile][spalte + 1] != 'X') {
+			if (suchen(zeile, spalte + 1, lab)){
+				return true;
+			};
+		}
+		if (lab[zeile - 1][spalte] != '#' && lab[zeile - 1][spalte] != 'X') {
+			if (suchen(zeile - 1, spalte, lab)){
+				return true;
+			};
+		}
+		if (lab[zeile][spalte - 1] != '#' && lab[zeile][spalte - 1] != 'X') {
+			if (suchen(zeile, spalte - 1, lab)) {
+				return true;
+			};
+		}
 		return false;
 	}
 
 
 	public static void main(String[] args) throws InterruptedException {
-		char[][] labyrinth = fromStrings(maps[2]);
+		char[][] labyrinth = fromStrings(maps[0]);
 		printLabyrinth(labyrinth);
-		//System.out.println("Ausgang gefunden: " + (suchen(5, 5, labyrinth) ? "ja" : "nein"));
+		System.out.println("Ausgang gefunden: " + (suchen(1, 1, labyrinth) ? "ja" : "nein"));
 		// TODO: System.out.println("Anzahl Wege: " + suchenAlle(5, 5, labyrinth));
 	}
 }
