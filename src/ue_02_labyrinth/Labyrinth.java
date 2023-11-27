@@ -159,7 +159,16 @@ public class Labyrinth {
 	public static void main(String[] args) throws InterruptedException {
 		char[][] labyrinth = fromStrings(maps[0]);
 		printLabyrinth(labyrinth);
-		System.out.println("Ausgang gefunden: " + (suchen(5, 5, labyrinth) ? "ja" : "nein"));
+//		System.out.println("Ausgang gefunden: " + (suchen(5, 5, labyrinth) ? "ja" : "nein"));
 		System.out.println("Anzahl Wege: " + suchenAlle(5, 5, labyrinth, 0));
+		labyrinth = fromStrings(maps[1]);
+		printLabyrinth(labyrinth);
+		System.out.println("Anzahl Wege: " + suchenAlle(5, 5, labyrinth, 0));
+		labyrinth = fromStrings(maps[2]);
+		printLabyrinth(labyrinth);
+		System.out.println("Anzahl Wege: " + suchenAlle(5, 5, labyrinth, 0));
+		labyrinth = fromStrings(maps[3]);
+		printLabyrinth(labyrinth);
+		System.out.println("Anzahl Wege: " + suchenAlle(1, 1, labyrinth, 0));
 	}
 }
