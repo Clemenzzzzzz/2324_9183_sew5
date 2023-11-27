@@ -86,6 +86,7 @@ public class Labyrinth {
 		System.out.println(Arrays.deepToString(lab));
 	}
 
+
 	/**
 	 * Suche den Weg
 	 * @param zeile     aktuelle Position
