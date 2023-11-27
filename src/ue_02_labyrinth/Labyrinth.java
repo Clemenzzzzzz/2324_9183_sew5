@@ -131,24 +131,23 @@ public class Labyrinth {
 	}
 
 
-	public static int suchenAlle(int zeile, int spalte, char[][] lab){
-		int counter = 0;
+	public static int suchenAlle(int zeile, int spalte, char[][] lab, int counter){
 		if (lab[zeile][spalte] == 'A'){
-			counter++;
+			return counter + 1;
 		}
 		lab[zeile][spalte] = 'X';
 		//printLabyrinth(lab);
 		if (lab[zeile + 1][spalte] != '#' && lab[zeile + 1][spalte] != 'X'){
-			suchenAlle(zeile + 1, spalte, lab);
+			counter = suchenAlle(zeile + 1, spalte, lab, counter);
 		}
 		if (lab[zeile][spalte + 1] != '#' && lab[zeile][spalte + 1] != 'X') {
-			suchenAlle(zeile, spalte + 1, lab);
+			counter = suchenAlle(zeile, spalte + 1, lab, counter);
 		}
 		if (lab[zeile - 1][spalte] != '#' && lab[zeile - 1][spalte] != 'X') {
-			suchenAlle(zeile - 1, spalte, lab);
+			counter = suchenAlle(zeile - 1, spalte, lab, counter);
 		}
 		if (lab[zeile][spalte - 1] != '#' && lab[zeile][spalte - 1] != 'X') {
-			suchenAlle(zeile, spalte - 1, lab);
+			counter = suchenAlle(zeile, spalte - 1, lab, counter);
 		}
 		lab[zeile][spalte] = ' ';
 		return counter;
@@ -161,6 +160,6 @@ public class Labyrinth {
 		char[][] labyrinth = fromStrings(maps[0]);
 		printLabyrinth(labyrinth);
 		System.out.println("Ausgang gefunden: " + (suchen(5, 5, labyrinth) ? "ja" : "nein"));
-		System.out.println("Anzahl Wege: " + suchenAlle(5, 5, labyrinth));
+		System.out.println("Anzahl Wege: " + suchenAlle(5, 5, labyrinth, 0));
 	}
 }
