@@ -99,6 +99,7 @@ public class Labyrinth {
 		return false;
 	}
 
+
 	public static void main(String[] args) throws InterruptedException {
 		char[][] labyrinth = fromStrings(maps[2]);
 		printLabyrinth(labyrinth);
