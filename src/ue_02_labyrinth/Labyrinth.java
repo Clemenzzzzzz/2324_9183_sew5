@@ -131,10 +131,36 @@ public class Labyrinth {
 	}
 
 
+	public static int suchenAlle(int zeile, int spalte, char[][] lab){
+		int counter = 0;
+		if (lab[zeile][spalte] == 'A'){
+			counter++;
+		}
+		lab[zeile][spalte] = 'X';
+		//printLabyrinth(lab);
+		if (lab[zeile + 1][spalte] != '#' && lab[zeile + 1][spalte] != 'X'){
+			suchenAlle(zeile + 1, spalte, lab);
+		}
+		if (lab[zeile][spalte + 1] != '#' && lab[zeile][spalte + 1] != 'X') {
+			suchenAlle(zeile, spalte + 1, lab);
+		}
+		if (lab[zeile - 1][spalte] != '#' && lab[zeile - 1][spalte] != 'X') {
+			suchenAlle(zeile - 1, spalte, lab);
+		}
+		if (lab[zeile][spalte - 1] != '#' && lab[zeile][spalte - 1] != 'X') {
+			suchenAlle(zeile, spalte - 1, lab);
+		}
+		lab[zeile][spalte] = ' ';
+		return counter;
+	}
+
+
+
+
 	public static void main(String[] args) throws InterruptedException {
 		char[][] labyrinth = fromStrings(maps[0]);
 		printLabyrinth(labyrinth);
-		System.out.println("Ausgang gefunden: " + (suchen(1, 1, labyrinth) ? "ja" : "nein"));
-		// TODO: System.out.println("Anzahl Wege: " + suchenAlle(5, 5, labyrinth));
+		System.out.println("Ausgang gefunden: " + (suchen(5, 5, labyrinth) ? "ja" : "nein"));
+		System.out.println("Anzahl Wege: " + suchenAlle(5, 5, labyrinth));
 	}
 }
