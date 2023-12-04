@@ -193,22 +193,29 @@ public class Labyrinth {
 
 
 	public static void main(String[] args) throws InterruptedException {
-		char[][] labyrinth = fromStrings(maps[0]);
-		printLabyrinth(labyrinth);
-//		System.out.println("Ausgang gefunden: " + (suchen(5, 5, labyrinth) ? "ja" : "nein"));
-		System.out.println("Anzahl Wege: " + suchenAlle(5, 5, labyrinth, 0));
-		labyrinth = fromStrings(maps[1]);
-		printLabyrinth(labyrinth);
-		System.out.println("Anzahl Wege: " + suchenAlle(5, 5, labyrinth, 0));
-		labyrinth = fromStrings(maps[2]);
-		printLabyrinth(labyrinth);
-		System.out.println("Anzahl Wege: " + suchenAlle(5, 5, labyrinth, 0));
-		labyrinth = fromStrings(maps[3]);
-		printLabyrinth(labyrinth);
-		System.out.println("Anzahl Wege: " + suchenAlle(1, 1, labyrinth, 0));
-		System.out.println("-------------------------------------------");
-		labyrinth = fromStrings(read_lab("C:\\Schule\\5_Klasse\\SEW\\Java\\src\\ue_02_labyrinth\\l1.txt"));
-		printLabyrinth(labyrinth);
-		System.out.println(suchenAlle(1, 1, labyrinth, 0));
+		//char[][] labyrinth = fromStrings(maps[0]);
+		//printLabyrinth(labyrinth);
+//		//System.out.println("Ausgang gefunden: " + (suchen(5, 5, labyrinth) ? "ja" : "nein"));
+		//System.out.println("Anzahl Wege: " + suchenAlle(5, 5, labyrinth, 0));
+		//labyrinth = fromStrings(maps[1]);
+		//printLabyrinth(labyrinth);
+		//System.out.println("Anzahl Wege: " + suchenAlle(5, 5, labyrinth, 0));
+		//labyrinth = fromStrings(maps[2]);
+		//printLabyrinth(labyrinth);
+		//System.out.println("Anzahl Wege: " + suchenAlle(5, 5, labyrinth, 0));
+		//labyrinth = fromStrings(maps[3]);
+		//printLabyrinth(labyrinth);
+		//System.out.println("Anzahl Wege: " + suchenAlle(1, 1, labyrinth, 0));
+		//System.out.println("-------------------------------------------");
+		char[][] lab1 = fromStrings(read_lab("C:\\Schule\\5_Klasse\\SEW\\Java\\src\\ue_02_labyrinth\\l1.txt"));
+		char[][] lab2 = fromStrings(read_lab("C:\\Schule\\5_Klasse\\SEW\\Java\\src\\ue_02_labyrinth\\l2.txt"));
+		char[][] lab3 = fromStrings(read_lab("C:\\Schule\\5_Klasse\\SEW\\Java\\src\\ue_02_labyrinth\\l3.txt"));
+		long startTime = System.currentTimeMillis();
+		System.out.println(suchenAlle(1, 1, lab1, 0));
+		System.out.println(suchenAlle(1, 1, lab2, 0));
+		System.out.println(suchenAlle(1, 1, lab3, 0));
+		long endTime = System.currentTimeMillis();
+		System.out.println("Zeit: " + (endTime - startTime));
+		//printLabyrinth(labyrinth);
 	}
 }
