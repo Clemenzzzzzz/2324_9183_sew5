@@ -136,6 +136,15 @@ public class Labyrinth {
 	}
 
 
+	/**
+	 * Methode um die Anzahl der möglichen Wege durch ein Labyrinth zu finden
+	 *
+	 * @param zeile     aktuelle Position
+	 * @param spalte    aktuelle Position
+	 * @param lab		labyrinth in dem gesucht wird
+	 * @param counter	anzahl der möglichkeiten
+	 * @return			Anzahl der Möglichkeiten
+	 */
 	public static int suchenAlle(int zeile, int spalte, char[][] lab, int counter){
 		if (lab[zeile][spalte] == 'A'){
 			return counter + 1;
@@ -159,7 +168,12 @@ public class Labyrinth {
 	}
 
 
-
+	/**
+	 * liest ein Labyrinth aus einem Textfile aus
+	 *
+	 * @param filePath 	Dateipfad des labyrinths
+	 * @return			laybrinth als String Array
+	 */
 	public static String[] read_lab(String filePath){
 		List<String> lines = new ArrayList<>();
 		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
