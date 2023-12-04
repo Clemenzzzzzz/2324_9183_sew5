@@ -1,5 +1,4 @@
-
-
+import time
 
 
 def read_lab(file_path):
@@ -68,21 +67,26 @@ def suchen_alle(zeile, spalte, lab, counter):
 
 
 # TODO's:
-#   Zeitmessung und ausgabe
 #   argparse
 #   docstring
-#   alles nochmal gescheit testen und mit java vergleichen
 
 
 
 def main():
-    lab = read_lab('C:\\Schule\\5_Klasse\\SEW\python\\5_Klasse_python\\ue_02_labyrinth\\l3.txt')
+    lab1 = read_lab('C:\\Schule\\5_Klasse\\SEW\python\\5_Klasse_python\\ue_02_labyrinth\\l3.txt')
+    lab2 = read_lab('C:\\Schule\\5_Klasse\\SEW\python\\5_Klasse_python\\ue_02_labyrinth\\l2.txt')
+    lab3 = read_lab('C:\\Schule\\5_Klasse\\SEW\python\\5_Klasse_python\\ue_02_labyrinth\\l3.txt')
     #for line in lab:
     #    print(line[0])
-    print(lab[11][6]) # --> that is the A
-    print_lab(lab)
-    print(suchen(1,1, lab))
-    print(suchen_alle(1, 1, lab, 0))
+    #print(lab[11][6]) # --> that is the A
+    #print_lab(lab)
+    #print(suchen(1,1, lab))
+    start_time = time.time()
+    print(suchen_alle(1, 1, lab1, 0))
+    print(suchen_alle(1, 1, lab2, 0))
+    print(suchen_alle(1, 1, lab3, 0))
+    end_time = time.time()
+    print('Time: ', (end_time - start_time))
 
 
 if __name__ == "__main__":
