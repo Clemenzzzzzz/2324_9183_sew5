@@ -1,7 +1,12 @@
 package ue_02_labyrinth;
 //@author Clemens Hodina
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.List;
 
 public class Labyrinth {
 	public static String[][] maps = {{
@@ -155,6 +160,23 @@ public class Labyrinth {
 
 
 
+	public static String[] read_lab(String filePath){
+		List<String> lines = new ArrayList<>();
+		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = br.readLine()) != null) {
+				lines.add(line);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String[] erg = new String[lines.size()];
+		for (int i = 0; i < lines.size(); i++) {
+			erg[i] = lines.get(i);
+		}
+		return erg;
+	}
+
 
 	public static void main(String[] args) throws InterruptedException {
 		char[][] labyrinth = fromStrings(maps[0]);
@@ -170,5 +192,9 @@ public class Labyrinth {
 		labyrinth = fromStrings(maps[3]);
 		printLabyrinth(labyrinth);
 		System.out.println("Anzahl Wege: " + suchenAlle(1, 1, labyrinth, 0));
+		System.out.println("-------------------------------------------");
+		labyrinth = fromStrings(read_lab("C:\\Schule\\5_Klasse\\SEW\\Java\\src\\ue_02_labyrinth\\l1.txt"));
+		printLabyrinth(labyrinth);
+		System.out.println(suchenAlle(1, 1, labyrinth, 0));
 	}
 }
