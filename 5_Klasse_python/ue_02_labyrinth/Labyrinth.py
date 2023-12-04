@@ -1,7 +1,14 @@
+import argparse
 import time
 
 
 def read_lab(file_path):
+    """
+    reads a labyrinth from a file
+
+    :param file_path: path of the file that needs to be read
+    :return: a list of strings of the labyrinth
+    """
     lab = []
     with open(file_path, 'r') as file:
         # Zeilenweise auslesen
@@ -11,10 +18,24 @@ def read_lab(file_path):
 
 
 def print_lab(lab):
+    """
+    prints a string that is a labyrinth
+
+    :param lab: thw lab to print out
+    :return: -
+    """
     for line in lab:
         print(line)
 
 def suchen(zeile, spalte, lab):
+    """
+    searches for an exit in labyrinths
+
+    :param zeile: start on x-axis
+    :param spalte: start on y-axis
+    :param lab: lab to search in
+    :return: if an exit could be found in this labyrinth
+    """
     if lab[zeile][spalte] == 'A':
         return True
     lab = [list(row) for row in lab]
@@ -40,6 +61,15 @@ def suchen(zeile, spalte, lab):
 
 
 def suchen_alle(zeile, spalte, lab, counter):
+    """
+    searches for every possible way to find an exit and counts them
+
+    :param zeile: start point x
+    :param spalte: start point y
+    :param lab: labyrinth
+    :param counter: how many ways there are to solve the lab
+    :return: number of ways to get to an exit
+    """
     if lab[zeile][spalte] == 'A':
         return counter + 1
 
@@ -68,25 +98,48 @@ def suchen_alle(zeile, spalte, lab, counter):
 
 # TODO's:
 #   argparse
-#   docstring
 
 
 
 def main():
-    lab1 = read_lab('C:\\Schule\\5_Klasse\\SEW\python\\5_Klasse_python\\ue_02_labyrinth\\l3.txt')
-    lab2 = read_lab('C:\\Schule\\5_Klasse\\SEW\python\\5_Klasse_python\\ue_02_labyrinth\\l2.txt')
-    lab3 = read_lab('C:\\Schule\\5_Klasse\\SEW\python\\5_Klasse_python\\ue_02_labyrinth\\l3.txt')
-    #for line in lab:
-    #    print(line[0])
-    #print(lab[11][6]) # --> that is the A
-    #print_lab(lab)
-    #print(suchen(1,1, lab))
-    start_time = time.time()
-    print(suchen_alle(1, 1, lab1, 0))
-    print(suchen_alle(1, 1, lab2, 0))
-    print(suchen_alle(1, 1, lab3, 0))
-    end_time = time.time()
-    print('Time: ', (end_time - start_time))
+    #lab1 = read_lab('C:\\Schule\\5_Klasse\\SEW\python\\5_Klasse_python\\ue_02_labyrinth\\l3.txt')
+    #lab2 = read_lab('C:\\Schule\\5_Klasse\\SEW\python\\5_Klasse_python\\ue_02_labyrinth\\l2.txt')
+    #lab3 = read_lab('C:\\Schule\\5_Klasse\\SEW\python\\5_Klasse_python\\ue_02_labyrinth\\l3.txt')
+    ##for line in lab:
+    ##    print(line[0])
+    ##print(lab[11][6]) # --> that is the A
+    ##print_lab(lab)
+    ##print(suchen(1,1, lab))
+    #start_time = time.time()
+    #print(suchen_alle(1, 1, lab1, 0))
+    #print(suchen_alle(1, 1, lab2, 0))
+    #print(suchen_alle(1, 1, lab3, 0))
+    #end_time = time.time()
+    #print('Time: ', (end_time - start_time))
+    """
+    arg-parser for the program to be runnable
+
+    :return: -
+    """
+    parser = argparse.ArgumentParser(description="Calculate number of ways through a labyrinth")
+    parser.add_argument("filename", help="File containing the labyrinth to solve", type=str)
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("-v", "--verbose", help="add log verbosity", action="store_true")
+    group.add_argument("-q", "--quiet", help="turn off log verbosity", action="store_true")
+
+    args = parser.parse_args()
+    if args.verbose:
+        # global verbosity
+        verbosity = True
+        print("Verbosity turned on")
+
+    if args.quiet:
+        # global verbosity
+        verbosity = False
+        print('Verbosity turned off')
+
+    if args.filename:
+        create_files(args.filename)
 
 
 if __name__ == "__main__":
