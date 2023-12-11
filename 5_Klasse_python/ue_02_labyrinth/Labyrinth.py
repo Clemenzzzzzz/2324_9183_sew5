@@ -70,13 +70,17 @@ def suchen_alle(zeile, spalte, lab, counter):
     :param counter: how many ways there are to solve the lab
     :return: number of ways to get to an exit
     """
+    global print_true
     if lab[zeile][spalte] == 'A':
         return counter + 1
 
     lab = [list(row) for row in lab]
     lab[zeile][spalte] = 'X'
-    #result_list = ["".join(row) for row in lab]
-    #print_lab(result_list)
+    if print_true:
+        result_list = ["".join(row) for row in lab]
+        print_lab(result_list)
+    if delay:
+        time.sleep(delay)
 
     if lab[zeile + 1][spalte] != '#' and lab[zeile + 1][spalte] != 'X':
         counter = suchen_alle(zeile + 1, spalte, lab, counter)
@@ -96,12 +100,12 @@ def suchen_alle(zeile, spalte, lab, counter):
     return counter
 
 
-# TODO's:
-#   argparse
-
-
+global print_true
+global delay
 
 def main():
+    global print_true
+    global delay
     #lab1 = read_lab('C:\\Schule\\5_Klasse\\SEW\python\\5_Klasse_python\\ue_02_labyrinth\\l3.txt')
     #lab2 = read_lab('C:\\Schule\\5_Klasse\\SEW\python\\5_Klasse_python\\ue_02_labyrinth\\l2.txt')
     #lab3 = read_lab('C:\\Schule\\5_Klasse\\SEW\python\\5_Klasse_python\\ue_02_labyrinth\\l3.txt')
@@ -123,23 +127,26 @@ def main():
     """
     parser = argparse.ArgumentParser(description="Calculate number of ways through a labyrinth")
     parser.add_argument("filename", help="File containing the labyrinth to solve", type=str)
-    group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument("-v", "--verbose", help="add log verbosity", action="store_true")
-    group.add_argument("-q", "--quiet", help="turn off log verbosity", action="store_true")
+    parser.add_argument("-x", "--xstart", type=int, help="X-coordinate to start", default=1)
+    parser.add_argument("-y", "--ystart", type=int, help="Y-coordinate to start", default=1)
+    parser.add_argument("-p", "--print", action="store_true", help="Print output of every solution")
+    parser.add_argument("-t", "--time", action="store_true", help="Print total calculation time (in milliseconds)")
+    parser.add_argument("-d", "--delay", type=int, help="Delay after printing a solution (in seconds)")
 
     args = parser.parse_args()
-    if args.verbose:
-        # global verbosity
-        verbosity = True
-        print("Verbosity turned on")
-
-    if args.quiet:
-        # global verbosity
-        verbosity = False
-        print('Verbosity turned off')
-
-    if args.filename:
-        create_files(args.filename)
+    if args.filename:  # TODO alles testen
+        if args.print:
+            print_true = True
+        if args.delay:
+            delay = args.delay
+        if args.time:
+            start_time = time.time()
+            erg = suchen_alle(args.xstart, args.ystart, read_lab(args.filename), 0)
+            end_time = time.time()
+            erg_time = end_time - start_time
+            print(erg, 'Ways, with a time of: ', erg_time)
+        else:
+            print(suchen_alle(args.xstart, args.ystart, read_lab(args.filename), 0))
 
 
 if __name__ == "__main__":
