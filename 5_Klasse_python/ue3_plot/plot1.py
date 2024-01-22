@@ -31,7 +31,6 @@ ax.spines['bottom'].set_position(('data', 0))
 ax.yaxis.set_ticks_position('left')
 ax.spines['left'].set_position(('data', 0))
 
-
 angle = -45
 angle_rad = math.radians(angle)
 plt.plot([angle_rad, angle_rad], [0, math.cos(angle_rad)], color='red', linewidth=2.5, linestyle="--")
@@ -59,17 +58,23 @@ for label in ax.get_xticklabels() + ax.get_yticklabels():
     label.set_fontsize(16)
     label.set_bbox(dict(facecolor='white', edgecolor='None', alpha=0.65))
 
+arrow_format = dict(facecolor='black', edgecolor='black', linewidth=0.5, arrowstyle='->')
+
+arrow_length = 0.05
+arrow_head_width = 0.02
+arrow_head_length = 5
+
+
+plt.annotate('', xy=(max(X) + arrow_length, 0), xytext=(max(X), 0),
+             arrowprops=dict(arrowstyle='->', **arrow_format))
+
+plt.annotate('', xy=(0, max(C) + arrow_length), xytext=(0, max(C)),
+             arrowprops=dict(arrowstyle='->', **arrow_format))
+
 # bei neueren matplot versionen
 ax.set_axisbelow(True)
 
 plt.title("Hodinas Funktionen", fontsize=18)
 
-
 plt.savefig("plot1_hodina.png", dpi=72)
 plt.show()
-
-
-
-
-
-
