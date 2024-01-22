@@ -71,6 +71,7 @@ def suchen_alle(zeile, spalte, lab, counter):
     :return: number of ways to get to an exit
     """
     global print_true
+    global delay
     if lab[zeile][spalte] == 'A':
         return counter + 1
 
@@ -134,11 +135,15 @@ def main():
     parser.add_argument("-d", "--delay", type=int, help="Delay after printing a solution (in seconds)")
 
     args = parser.parse_args()
-    if args.filename:  # TODO alles testen
+    if args.filename:
         if args.print:
             print_true = True
+        else:
+            print_true = False
         if args.delay:
             delay = args.delay
+        else:
+            delay = 0
         if args.time:
             start_time = time.time()
             erg = suchen_alle(args.xstart, args.ystart, read_lab(args.filename), 0)

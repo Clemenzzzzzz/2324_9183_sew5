@@ -42,7 +42,7 @@ def read_class_excel(filename: str) -> str:
         """
     lines = []
     wb = load_workbook(filename, read_only=True)
-    ws = wb[wb.sheetnames[0]]
+    ws = wb[wb.sheetnames[0]] # Hier kann man probably andere Zahlen angeben für andere Sheets in der gleichen Datei
     for row in ws.iter_rows(min_row=2):
         if row[0].value == None:
             break
