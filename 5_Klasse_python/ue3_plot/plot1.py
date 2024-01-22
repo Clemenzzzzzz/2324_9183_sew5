@@ -32,7 +32,7 @@ ax.spines['bottom'].set_position(('data', 0))
 ax.yaxis.set_ticks_position('left')
 ax.spines['left'].set_position(('data', 0))
 
-# Plotting the vertical line at -45 degrees
+
 angle = -45
 angle_rad = math.radians(angle)
 plt.plot([angle_rad, angle_rad], [0, math.cos(angle_rad)], color='red', linewidth=2.5, linestyle="--")
@@ -42,7 +42,6 @@ plt.annotate(fr'$\cos({angle}^\circ)$',
              xytext=(-90, -50), textcoords='offset points', fontsize=16,
              arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=.2"))
 
-# Adding the previous mark at 2*pi/3
 t = 2 * PI / 3
 plt.plot([t, t], [0, math.cos(t)], color='green', linewidth=2.5, linestyle="--")
 plt.scatter([t, ], [math.cos(t), ], 50, color='green')
@@ -63,6 +62,9 @@ for label in ax.get_xticklabels() + ax.get_yticklabels():
 
 # bei neueren matplot versionen
 ax.set_axisbelow(True)
+
+plt.title("Hodinas Funktionen", fontsize=18)
+
 
 plt.savefig("plot1_hodina.png", dpi=72)
 plt.show()
