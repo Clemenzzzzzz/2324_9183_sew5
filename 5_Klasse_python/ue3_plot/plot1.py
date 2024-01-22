@@ -10,8 +10,6 @@ C = [math.cos(x) for x in X]
 S = [math.sin(x) for x in X]
 
 plt.figure(figsize=(10, 6), dpi=80)
-plt.plot(X, C, color="green", linewidth=2.5, linestyle=":")
-plt.plot(X, S, color="orange", linewidth=2.5, linestyle=":")
 
 plt.xlim(min(X) * 1.1, max(X) * 1.1)
 plt.ylim(min(C) * 1.1, max(C) * 1.1)
@@ -22,6 +20,7 @@ plt.yticks([-1, 0, +1],
            [r'$-1$', r'$0$', r'$+1$'])
 
 plt.plot(X, S, color="orange", linewidth=2.5, linestyle=":", label="sine")
+plt.plot(X, C, color="green", linewidth=2.5, linestyle="--", label="cos")
 plt.legend(loc='upper left', frameon=False)
 
 ax = plt.gca()
