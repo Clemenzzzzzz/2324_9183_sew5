@@ -1,19 +1,14 @@
-#from subprocess import Popen, PIPE
-
-#GIT_COMMIT_FIELDS = ['id', 'author_name', 'author_email', 'date', 'message']
-#GIT_LOG_FORMAT = ['%H', '%an', '%ae', '%ad', '%s']
-#GIT_LOG_FORMAT = '%x1f'.join(GIT_LOG_FORMAT) + '%x1e'
-#p = Popen('git log --format="%s"' % GIT_LOG_FORMAT, shell=True, stdout=PIPE)
-#(log, _) = p.communicate()
-#log = log.strip('\n\x1e').split("\x1e")
-#log = [row.strip().split("\x1f") for row in log]
-#log = [dict(zip(GIT_COMMIT_FIELDS, row)) for row in log]
-
 import subprocess
 import datetime
 import matplotlib.pyplot as plt
 
 def parse_git_log(git_folder):
+    """
+    sends a git log to the command line and analyzes the data it gets
+
+    :param git_folder: path to the directory of the git folder
+    :return: times of the commits in this git repo
+    """
     command = ['git', 'log', '--pretty=format:%ad', '--date=iso']
     process = subprocess.Popen(command, cwd=git_folder, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, universal_newlines=True)
     output, _ = process.communicate()
@@ -22,6 +17,12 @@ def parse_git_log(git_folder):
     return commit_times
 
 def plot_commit_activity(commit_times):
+    """
+    generates a plot with two figures that give data about the git activity of a person
+
+    :param commit_times: from the parse_git_log method to know when which commits happened
+    :return: the plot as an image
+    """
     weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     weekday_counts = [0] * 7
     hour_counts = [0] * 24
@@ -46,7 +47,6 @@ def plot_commit_activity(commit_times):
     plt.tight_layout()
     plt.savefig('git_stats_hodina.png')
     plt.show()
-
 
 if __name__ == "__main__":
     import argparse
