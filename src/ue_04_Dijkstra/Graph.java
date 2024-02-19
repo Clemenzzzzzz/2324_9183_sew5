@@ -24,7 +24,8 @@ public class Graph{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(data);
+        String dataString = data.toString();
+        System.out.println(dataString);
         //data kann man hier verarbeiten
     }
 
