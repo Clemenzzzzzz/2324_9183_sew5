@@ -31,7 +31,7 @@ def plot_commit_activity(commit_times):
         hour_counts[commit_time.hour] += 1
 
     fig, axes = plt.subplots(1, 2, figsize=(12, 6))
-    title = 'Clemens Hodina, Commits: ' + str(weekday_counts.count())
+    title = 'Clemens Hodina, Commits: ' + str(sum(weekday_counts))
     fig.suptitle(title)
     axes[0].scatter(weekdays, weekday_counts)
     axes[0].set_title('Commits nach Wochentag')
@@ -48,7 +48,23 @@ def plot_commit_activity(commit_times):
     plt.show()
 
 
+if __name__ == "__main__":
+    import argparse
 
+    parser = argparse.ArgumentParser(description="Git Statistics")
+    parser.add_argument("git_folder", help="Path to the Git repository folder")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Verbose mode")
+    parser.add_argument("-q", "--quiet", action="store_true", help="Quiet mode")
+    parser.add_argument("--log", help="Log file path")
+    args = parser.parse_args()
+
+    if args.verbose:
+        print("Verbose mode enabled")
+    if args.quiet:
+        print("Quiet mode enabled")
+
+    commit_times = parse_git_log(args.git_folder)
+    plot_commit_activity(commit_times)
 
 
 
