@@ -16,6 +16,7 @@ def parse_git_log(git_folder):
     commit_times = [datetime.datetime.fromisoformat(commit) for commit in commits]
     return commit_times
 
+
 def plot_commit_activity(commit_times):
     """
     generates a plot with two figures that give data about the git activity of a person
