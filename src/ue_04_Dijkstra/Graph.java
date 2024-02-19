@@ -10,10 +10,9 @@ public class Graph{
     List<Node> nodes;
 
     Comparator<Node> pq;
-    //PQ --> das müsste treeset sein, Schlüssel ist Name der Node, Value ist Distanz
-    // dann kann ich die priority queue immer überschreiben weil ja immer nur ein Schlüssel ist
 
-    public void readGraphFromAdjacencyMatrixFile(Path file) {
+
+    public static void readGraphFromAdjacencyMatrixFile(Path file) {
         StringBuilder data = new StringBuilder();
 
         try (BufferedReader br = new BufferedReader(new FileReader(String.valueOf(file)))) {
@@ -25,8 +24,8 @@ public class Graph{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         System.out.println(data);
+        //data kann man hier verarbeiten
     }
 
     public String getAllPaths() {
@@ -37,7 +36,9 @@ public class Graph{
 
     }
 
-
+    public static void main(String[] args) {
+        readGraphFromAdjacencyMatrixFile(Path.of("C:\\Schule\\5_Klasse\\SEW\\Java\\src\\ue_04_Dijkstra\\ressources\\Graph_A-H.csv"));
+    }
 
 
 }

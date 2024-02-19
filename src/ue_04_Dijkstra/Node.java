@@ -2,7 +2,7 @@ package ue_04_Dijkstra;
 
 import java.util.TreeSet;
 
-public class Node {
+public class Node implements Comparable{
 
     String id;
 
@@ -43,5 +43,10 @@ public class Node {
 
     public void visit() {
 
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return 0;
     }
 }
