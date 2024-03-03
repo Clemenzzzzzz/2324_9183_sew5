@@ -1,20 +1,35 @@
 import logging
 import subprocess
 import datetime
+import sys
+from logging.handlers import RotatingFileHandler
+
 import matplotlib.pyplot as plt
 
-def setup_logging(logfile, verbose, quiet):
+
+
+def setup_logging(verbose, quiet):
+    logger = logging.getLogger(__name__)
+    handler = logging.handlers.RotatingFileHandler("create_class.log", maxBytes=10000, backupCount=5)
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+
+    stream_handler = logging.StreamHandler(sys.stdout)
+    stream_handler.setFormatter(formatter)
+
     if verbose and quiet:
         raise ValueError("Verbose und Quiet können nicht gleichzeitig aktiviert sein.")
 
     if verbose:
-        log_level = logging.DEBUG
+        logger.setLevel(logging.DEBUG)
     elif quiet:
-        log_level = logging.WARNING
+        logger.setLevel(logging.WARNING)
     else:
-        log_level = logging.INFO
+        logger.setLevel(logging.INFO)
 
-    logging.basicConfig(filename=logfile, level=log_level, format='%(asctime)s - %(levelname)s - %(message)s')
+    logger.addHandler(handler)
+    logger.addHandler(stream_handler)
+    #logging.basicConfig(filename=logfile, level=log_level, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def parse_git_log(git_folder):
     """
@@ -76,12 +91,12 @@ if __name__ == "__main__":
     parser.add_argument("git_folder", help="Path to the Git repository folder")
     parser.add_argument("-v", "--verbose", action="store_true", help="Verbose mode")
     parser.add_argument("-q", "--quiet", action="store_true", help="Quiet mode")
-    parser.add_argument("-l", "--logfile", help="Log file path")
+    #parser.add_argument("-l", "--logfile", help="Log file path")
     args = parser.parse_args()
 
     logging.info("Script started!", args)
 
-    setup_logging(args.logfile, args.verbose, args.quiet)
+    setup_logging(args.verbose, args.quiet) #args.logfile,
 
     commit_times = parse_git_log(args.git_folder)
     plot_commit_activity(commit_times)
