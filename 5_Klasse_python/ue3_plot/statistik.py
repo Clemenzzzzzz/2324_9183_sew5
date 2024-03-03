@@ -1,6 +1,20 @@
+import logging
 import subprocess
 import datetime
 import matplotlib.pyplot as plt
+
+def setup_logging(logfile, verbose, quiet):
+    if verbose and quiet:
+        raise ValueError("Verbose und Quiet können nicht gleichzeitig aktiviert sein.")
+
+    if verbose:
+        log_level = logging.DEBUG
+    elif quiet:
+        log_level = logging.WARNING
+    else:
+        log_level = logging.INFO
+
+    logging.basicConfig(filename=logfile, level=log_level, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def parse_git_log(git_folder):
     """
@@ -14,6 +28,7 @@ def parse_git_log(git_folder):
     output, _ = process.communicate()
     commits = output.strip().split('\n')
     commit_times = [datetime.datetime.fromisoformat(commit) for commit in commits]
+    logging.info("Commit times read!")
     return commit_times
 
 
@@ -39,33 +54,38 @@ def plot_commit_activity(commit_times):
     axes[0].set_title('Commits nach Wochentag')
     axes[0].set_xlabel('Wochentag')
     axes[0].set_ylabel('Commits')
+    axes[0].grid(True)
+    logging.info("left graphic made")
 
     axes[1].scatter(range(24), hour_counts)
     axes[1].set_title('Commits nach Uhrzeit')
     axes[1].set_xlabel('Stunde')
     axes[1].set_ylabel('Commits')
+    axes[1].grid(True)
+    logging.info("right graphic made")
 
     plt.tight_layout()
+    #plt.grid(True)
     plt.savefig('git_stats_hodina.png')
     plt.show()
+    logging.info("graph can be seen")
 
 if __name__ == "__main__":
     import argparse
-
     parser = argparse.ArgumentParser(description="Git Statistics")
     parser.add_argument("git_folder", help="Path to the Git repository folder")
     parser.add_argument("-v", "--verbose", action="store_true", help="Verbose mode")
     parser.add_argument("-q", "--quiet", action="store_true", help="Quiet mode")
-    parser.add_argument("--log", help="Log file path")
+    parser.add_argument("-l", "--logfile", help="Log file path")
     args = parser.parse_args()
 
-    if args.verbose:
-        print("Verbose mode enabled")
-    if args.quiet:
-        print("Quiet mode enabled")
+    logging.info("Script started!", args)
+
+    setup_logging(args.logfile, args.verbose, args.quiet)
 
     commit_times = parse_git_log(args.git_folder)
     plot_commit_activity(commit_times)
+    logging.info("Script finished succesfully!")
 
 
 

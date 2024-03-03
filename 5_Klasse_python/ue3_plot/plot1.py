@@ -65,11 +65,11 @@ arrow_head_width = 0.02
 arrow_head_length = 5
 
 
-plt.annotate('', xy=(max(X) + arrow_length, 0), xytext=(max(X), 0),
-             arrowprops=dict(arrowstyle='->', **arrow_format))
+#plt.annotate('', xy=(max(X) + arrow_length, 0), xytext=(max(X), 0),
+#             arrowprops=dict(arrowstyle='->', **arrow_format))
 
-plt.annotate('', xy=(0, max(C) + arrow_length), xytext=(0, max(C)),
-             arrowprops=dict(arrowstyle='->', **arrow_format))
+#plt.annotate('', xy=(0, max(C) + arrow_length), xytext=(0, max(C)),
+#             arrowprops=dict(arrowstyle='->', **arrow_format))
 
 # bei neueren matplot versionen
 ax.set_axisbelow(True)
