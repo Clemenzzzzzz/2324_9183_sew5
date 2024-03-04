@@ -8,13 +8,22 @@ import matplotlib.pyplot as plt
 
 
 
+
+
+
 def setup_logging(verbose, quiet):
-    logger = logging.getLogger(__name__)
+    """
+    configures the parameters for logging
+
+    :param verbose: if logging should be everything
+    :param quiet: if logging should be as quiet as possible
+    :return:
+    """
     handler = logging.handlers.RotatingFileHandler("create_class.log", maxBytes=10000, backupCount=5)
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
     handler.setFormatter(formatter)
 
-    stream_handler = logging.StreamHandler(sys.stdout)
+    stream_handler = logging.StreamHandler()
     stream_handler.setFormatter(formatter)
 
     if verbose and quiet:
@@ -43,7 +52,7 @@ def parse_git_log(git_folder):
     output, _ = process.communicate()
     commits = output.strip().split('\n')
     commit_times = [datetime.datetime.fromisoformat(commit) for commit in commits]
-    logging.info("Commit times read!")
+    logger.info("Commit times read!")
     return commit_times
 
 
@@ -70,21 +79,23 @@ def plot_commit_activity(commit_times):
     axes[0].set_xlabel('Wochentag')
     axes[0].set_ylabel('Commits')
     axes[0].grid(True)
-    logging.info("left graphic made")
+    logger.info("left graphic made")
 
     axes[1].scatter(range(24), hour_counts)
     axes[1].set_title('Commits nach Uhrzeit')
     axes[1].set_xlabel('Stunde')
     axes[1].set_ylabel('Commits')
     axes[1].grid(True)
-    logging.info("right graphic made")
+    logger.info("right graphic made")
 
     plt.tight_layout()
     #plt.grid(True)
     plt.savefig('git_stats_hodina.png')
     plt.show()
-    logging.info("graph can be seen")
+    logger.info("graph can be seen")
 
+
+logger = logging.getLogger(__name__)
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Git Statistics")
