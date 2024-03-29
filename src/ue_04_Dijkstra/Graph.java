@@ -12,7 +12,7 @@ import java.util.List;
 public class Graph {
     private final List<Node> nodes = new ArrayList<>();
 
-    Comparator<Node> pq;
+    private Comparator<Node> pq;
 
 
     public Graph(Path path) throws IOException {
@@ -34,7 +34,7 @@ public class Graph {
             for (int j = 1; j < line.length; j++) {
                 if (!line[j].isEmpty()){
                     int distance = Integer.parseInt(line[j]);
-                    node.addEdge(new Edge(distance, getOrCreateNode(line[j])));
+                    node.addEdge(new Edge(distance, getOrCreateNode(topLine[j])));
                 }
             }
         }
@@ -62,6 +62,14 @@ public class Graph {
 
     public void calcWithDijkstra(String startNodeId) {
 
+    }
+
+    @Override
+    public String toString() {
+        return "Graph{" +
+                "nodes=" + nodes +
+                ", pq=" + pq +
+                '}';
     }
 
     public static void main(String[] args) throws IOException {

@@ -1,12 +1,14 @@
 package ue_04_Dijkstra;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 
 public class Node implements Comparable{
 
-    String id;
+    private String id;
 
-    TreeSet<Edge> Edges;
+    private final List<Edge> edges = new ArrayList<>();
 
     int distance;
 
@@ -22,7 +24,7 @@ public class Node implements Comparable{
     public String toString() {
         return "Node{" +
                 "id='" + id + '\'' +
-                ", Edges=" + Edges +
+                ", Edges=" + edges +
                 ", distance=" + distance +
                 ", previous=" + previous +
                 ", isVisited=" + isVisited +
@@ -34,7 +36,7 @@ public class Node implements Comparable{
     }
 
     public void addEdge(Edge edge){
-        Edges.add(edge);
+        edges.add(edge);
     }
 
     public void init() {
