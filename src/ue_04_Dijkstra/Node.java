@@ -10,9 +10,9 @@ public class Node implements Comparable{
 
     private final List<Edge> edges = new ArrayList<>();
 
-    int distance;
+    private int distance = Integer.MAX_VALUE;
 
-    Node previous;
+    private Node previous = null;
 
     boolean isVisited;
 
@@ -58,8 +58,21 @@ public class Node implements Comparable{
         return id;
     }
 
+    public int getDistance() {
+        return distance;
+    }
+
     @Override
     public int compareTo(Object o) {
         return 0;
+    }
+
+    public String stringOfEdges() {
+        String erg = "";
+        for (Edge e :
+                edges) {
+            erg += e.getNeighbour().getId() + ":" + e.getDistance() + " ";
+        }
+        return erg;
     }
 }

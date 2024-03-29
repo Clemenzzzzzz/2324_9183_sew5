@@ -12,7 +12,7 @@ import java.util.List;
 public class Graph {
     private final List<Node> nodes = new ArrayList<>();
 
-    private Comparator<Node> pq;
+    private Comparator<Node> pq; // TODO final ?
 
 
     public Graph(Path path) throws IOException {
@@ -66,10 +66,20 @@ public class Graph {
 
     @Override
     public String toString() {
-        return "Graph{" +
-                "nodes=" + nodes +
-                ", pq=" + pq +
-                '}';
+        String erg = "";
+        for (Node n :
+                nodes) {
+            String distance = "";
+            if (n.getDistance() == Integer.MAX_VALUE) {
+                distance = "?";
+            }else {
+                distance = Integer.toString(n.getDistance());
+            }
+            erg += n.getId() + " [totalDistance: " + distance + "] " + n.stringOfEdges() + "\n";
+        }
+
+
+        return erg;
     }
 
     public static void main(String[] args) throws IOException {
