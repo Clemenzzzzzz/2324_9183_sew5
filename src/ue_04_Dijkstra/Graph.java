@@ -67,15 +67,19 @@ public class Graph {
     @Override
     public String toString() {
         String erg = "";
+        String distance = "";
         for (Node n :
                 nodes) {
-            String distance = "";
-            if (n.getDistance() == Integer.MAX_VALUE) {
-                distance = "?";
+            if (n.isStartNode()){
+                erg += n.getId() + "----> is start Node" + n.stringOfEdges() + "\n";
             }else {
-                distance = Integer.toString(n.getDistance());
+                if (n.getDistance() == Integer.MAX_VALUE) {
+                    distance = "?";
+                }else {
+                    distance = Integer.toString(n.getDistance());
+                }
+                erg += n.getId() + " [totalDistance: " + distance + "] " + n.stringOfEdges() + "\n";
             }
-            erg += n.getId() + " [totalDistance: " + distance + "] " + n.stringOfEdges() + "\n";
         }
 
 

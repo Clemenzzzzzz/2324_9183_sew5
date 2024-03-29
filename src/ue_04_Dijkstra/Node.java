@@ -75,4 +75,8 @@ public class Node implements Comparable{
         }
         return erg;
     }
+
+    public boolean isStartNode(){
+        return previous == null && distance == 0;
+    }
 }
