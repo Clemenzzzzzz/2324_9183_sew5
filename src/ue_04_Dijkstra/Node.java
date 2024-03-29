@@ -14,6 +14,10 @@ public class Node implements Comparable{
 
     boolean isVisited;
 
+    public Node(String id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "Node{" +
@@ -29,20 +33,27 @@ public class Node implements Comparable{
         return null;
     }
 
-    public void addEdge(){
-
+    public void addEdge(Edge edge){
+        Edges.add(edge);
     }
 
     public void init() {
 
     }
 
+    public void change() {
+
+    }
 
     //TODO maybe setStartNode
 
 
     public void visit() {
 
+    }
+
+    public String getId() {
+        return id;
     }
 
     @Override

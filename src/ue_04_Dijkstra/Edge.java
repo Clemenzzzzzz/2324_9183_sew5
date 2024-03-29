@@ -5,4 +5,8 @@ public class Edge {
 
     private Node neighbour;
 
+    public Edge(int distance, Node neighbour) {
+        this.distance = distance;
+        this.neighbour = neighbour;
+    }
 }
