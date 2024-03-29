@@ -15,6 +15,10 @@ public class Graph {
     Comparator<Node> pq;
 
 
+    public Graph(Path path) throws IOException {
+        readGraphFromAdjacencyMatrixFile(path);
+    }
+
     public void readGraphFromAdjacencyMatrixFile(Path file) throws IOException {
         List<String> lines = Files.readAllLines(file);
         String[] topLine = lines.get(0).split(";");
@@ -60,8 +64,10 @@ public class Graph {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         //readGraphFromAdjacencyMatrixFile(Path.of("C:\\Schule\\5_Klasse\\SEW\\Java\\src\\ue_04_Dijkstra\\ressources\\Graph_A-H.csv"));
+        Graph a = new Graph(Path.of("C:\\Schule\\5_Klasse\\SEW\\Java\\src\\ue_04_Dijkstra\\ressources\\Graph_A-H.csv"));
+        System.out.println(a);
     }
 
 
