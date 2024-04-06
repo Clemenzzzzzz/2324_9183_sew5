@@ -1,6 +1,6 @@
 package ue_04_Dijkstra;
 
-public class Edge {
+public class Edge implements Comparable<Edge>{
     private final int distance;
 
     private final Node neighbour;
@@ -16,5 +16,15 @@ public class Edge {
 
     public Node getNeighbour() {
         return neighbour;
+    }
+
+    @Override
+    public int compareTo(Edge o) {
+        if (this.distance > o.distance) {
+            return 1;
+        } else if (this.distance < o.distance){
+            return -1;
+        }
+        return this.neighbour.getId().compareTo(o.neighbour.getId());
     }
 }

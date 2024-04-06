@@ -8,11 +8,12 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
 
 public class Graph {
     private final List<Node> nodes = new ArrayList<>();
 
-    private Comparator<Node> pq; // TODO final ?
+    private static PriorityQueue<Node> pq = new PriorityQueue<>(); // TODO final ?
 
 
     public Graph(Path path) throws IOException {
