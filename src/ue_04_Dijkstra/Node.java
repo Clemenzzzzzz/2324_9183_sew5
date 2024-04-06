@@ -57,7 +57,10 @@ public class Node implements Comparable<Node>{
 
 
     public void visit() {
-
+        isVisited = true;
+        for (Edge edge: edges) {
+            Graph.offerDistance(edge.getNeighbour(),this,edge.getDistance());
+        }
     }
 
     public String getId() {
