@@ -32,7 +32,37 @@ public class Node implements Comparable<Node>{
     }
 
     public String getPath() {
-        return null;
+        StringBuilder erg = new StringBuilder();
+        ArrayList<Node> path = getPathToSelf(this);
+        erg.append(path.get(path.size() - 1).getId());
+        if (path.size() == 1) { // TODO is start node wird nicht angezeigt
+            erg.append(": is start node");
+        } else {
+            for (int i = path.size() - 2; i >= 0; i--) {
+                erg.append(" --(").append(path.get(i).getDistance()).append(")-> ").append(path.get(i).getId());
+            }
+        }
+        erg.append("\n");
+        return erg.toString();
+    }
+
+
+    private static ArrayList<Node> getPathToSelf(Node node) {
+        ArrayList<Node> path = new ArrayList<>();
+        path.add(node);
+        Node previous = node.getPrevious();
+        if (node.getDistance() == 0 || (previous != null && previous.getId().equals(node.getId()))) {
+            return path;
+        }
+        if (previous == null) {
+            return null;
+        }
+        while (previous.getDistance() != 0) {
+            path.add(previous);
+            previous = previous.getPrevious();
+        }
+        path.add(previous);
+        return path;
     }
 
     public void addEdge(Edge edge){
@@ -69,6 +99,10 @@ public class Node implements Comparable<Node>{
 
     public int getDistance() {
         return distance;
+    }
+
+    public Node getPrevious() {
+        return previous;
     }
 
     @Override

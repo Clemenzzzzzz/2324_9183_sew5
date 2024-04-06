@@ -33,7 +33,7 @@ public class Graph {
             }
             Node node = getOrCreateNode(line[0]);
             for (int j = 1; j < line.length; j++) {
-                if (!line[j].isEmpty()){
+                if (!line[j].isEmpty()) {
                     int distance = Integer.parseInt(line[j]);
                     node.addEdge(new Edge(distance, getOrCreateNode(topLine[j])));
                 }
@@ -57,8 +57,13 @@ public class Graph {
         return node;
     }
 
-    public String getAllPaths() {
-        return null;
+    public static String getAllPaths() {
+        StringBuilder erg = new StringBuilder();
+        for (Node n :
+                nodes) {
+            erg.append(n.getPath());
+        }
+        return erg.toString();
     }
 
     public static void calcWithDijkstra(String startNodeId) {
@@ -77,7 +82,7 @@ public class Graph {
 
     public static boolean offerDistance(Node node2change, Node newPrevious, int newDistance) {
         if (node2change.getDistance() == Integer.MAX_VALUE || node2change.getDistance() > newPrevious.getDistance() + newDistance) {
-            node2change.change(newPrevious, newPrevious.getDistance()+newDistance);
+            node2change.change(newPrevious, newPrevious.getDistance() + newDistance);
             if (!node2change.isVisited) {
                 pq.add(node2change);
             }
@@ -89,7 +94,7 @@ public class Graph {
     public static Node getNodebyId(String s) {
         for (Node n :
                 nodes) {
-            if (n.getId().equals(s)){
+            if (n.getId().equals(s)) {
                 return n;
             }
         }
@@ -102,12 +107,12 @@ public class Graph {
         String distance = "";
         for (Node n :
                 nodes) {
-            if (n.isStartNode()){
-                erg += n.getId() + "----> is start Node" + n.stringOfEdges() + "\n";
-            }else {
+            if (n.isStartNode()) {
+                erg += n.getId() + "----> is start Node " + n.stringOfEdges() + "\n";
+            } else {
                 if (n.getDistance() == Integer.MAX_VALUE) {
                     distance = "?";
-                }else {
+                } else {
                     distance = Integer.toString(n.getDistance());
                 }
                 erg += n.getId() + " [totalDistance: " + distance + "] " + n.stringOfEdges() + "\n";
@@ -122,10 +127,13 @@ public class Graph {
         //readGraphFromAdjacencyMatrixFile(Path.of("C:\\Schule\\5_Klasse\\SEW\\Java\\src\\ue_04_Dijkstra\\ressources\\Graph_A-H.csv"));
         Graph a = new Graph(Path.of("C:\\Schule\\5_Klasse\\SEW\\Java\\src\\ue_04_Dijkstra\\ressources\\Graph_A-H.csv"));
         System.out.println(a);
+        //System.out.println(getAllPaths());
         calcWithDijkstra("A");
         System.out.println(a);
+        System.out.println(getAllPaths());
         calcWithDijkstra("D");
         System.out.println(a);
+        System.out.println(getAllPaths());
     }
 
 
