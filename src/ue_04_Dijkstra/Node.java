@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
 
-public class Node implements Comparable{
+public class Node implements Comparable<Node>{
 
     private String id;
 
@@ -68,8 +68,12 @@ public class Node implements Comparable{
     }
 
     @Override
-    public int compareTo(Object o) {
-        return 0;
+    public int compareTo(Node o) {
+        if (this.distance == o.distance) {
+            return this.id.compareTo(o.id);
+        } else {
+            return Integer.compare(this.distance, o.distance);
+        }
     }
 
     public String stringOfEdges() {
