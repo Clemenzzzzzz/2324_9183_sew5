@@ -40,14 +40,19 @@ public class Node implements Comparable{
     }
 
     public void init() {
-
+        isVisited = false;
+        previous = null;
+        distance = Integer.MAX_VALUE;
     }
 
     public void change() {
 
     }
 
-    //TODO maybe setStartNode
+    public void setStartNode() {
+        distance = 0;
+    }
+
 
 
     public void visit() {
