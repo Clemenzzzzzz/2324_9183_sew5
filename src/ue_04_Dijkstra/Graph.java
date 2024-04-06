@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 public class Graph {
-    private final List<Node> nodes = new ArrayList<>();
+    private static List<Node> nodes = new ArrayList<>();
 
     private static PriorityQueue<Node> pq = new PriorityQueue<>(); // TODO final ?
 
@@ -61,7 +61,7 @@ public class Graph {
         return null;
     }
 
-    public void calcWithDijkstra(String startNodeId) {
+    public static void calcWithDijkstra(String startNodeId) {
         for (Node n :
                 nodes) {
             n.init();
@@ -86,7 +86,7 @@ public class Graph {
         return false;
     }
 
-    public Node getNodebyId(String s) {
+    public static Node getNodebyId(String s) {
         for (Node n :
                 nodes) {
             if (n.getId().equals(s)){
@@ -121,6 +121,10 @@ public class Graph {
     public static void main(String[] args) throws IOException {
         //readGraphFromAdjacencyMatrixFile(Path.of("C:\\Schule\\5_Klasse\\SEW\\Java\\src\\ue_04_Dijkstra\\ressources\\Graph_A-H.csv"));
         Graph a = new Graph(Path.of("C:\\Schule\\5_Klasse\\SEW\\Java\\src\\ue_04_Dijkstra\\ressources\\Graph_A-H.csv"));
+        System.out.println(a);
+        calcWithDijkstra("A");
+        System.out.println(a);
+        calcWithDijkstra("D");
         System.out.println(a);
     }
 
