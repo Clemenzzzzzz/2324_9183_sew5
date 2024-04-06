@@ -45,8 +45,9 @@ public class Node implements Comparable<Node>{
         distance = Integer.MAX_VALUE;
     }
 
-    public void change() {
-
+    public void change(Node newPrevious, int newDistance) {
+        previous = newPrevious;
+        distance = newDistance;
     }
 
     public void setStartNode() {

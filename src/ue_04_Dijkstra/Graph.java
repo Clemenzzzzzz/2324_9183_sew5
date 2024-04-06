@@ -75,6 +75,17 @@ public class Graph {
         }
     }
 
+    public static boolean offerDistance(Node node2change, Node newPrevious, int newDistance) {
+        if (node2change.getDistance() == Integer.MAX_VALUE || node2change.getDistance() > newPrevious.getDistance() + newDistance) {
+            node2change.change(newPrevious, newPrevious.getDistance()+newDistance);
+            if (!node2change.isVisited) {
+                pq.add(node2change);
+            }
+            return true;
+        }
+        return false;
+    }
+
     public Node getNodebyId(String s) {
         for (Node n :
                 nodes) {
