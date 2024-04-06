@@ -59,11 +59,26 @@ public class Graph {
 
     public static String getAllPaths() {
         StringBuilder erg = new StringBuilder();
+        boolean paths = pathsAvailable();
         for (Node n :
                 nodes) {
-            erg.append(n.getPath());
+            if (!paths) {
+                erg.append("no path available for ").append(n.getId()).append(" [totalDistance: ?] ").append(n.stringOfEdges()).append("\n");
+            } else {
+                erg.append(n.getPath());
+            }
         }
         return erg.toString();
+    }
+
+    public static boolean pathsAvailable(){
+        for (Node n :
+                nodes) {
+            if (n.getPrevious() != null) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void calcWithDijkstra(String startNodeId) {
@@ -127,7 +142,7 @@ public class Graph {
         //readGraphFromAdjacencyMatrixFile(Path.of("C:\\Schule\\5_Klasse\\SEW\\Java\\src\\ue_04_Dijkstra\\ressources\\Graph_A-H.csv"));
         Graph a = new Graph(Path.of("C:\\Schule\\5_Klasse\\SEW\\Java\\src\\ue_04_Dijkstra\\ressources\\Graph_A-H.csv"));
         System.out.println(a);
-        //System.out.println(getAllPaths());
+        System.out.println(getAllPaths());
         calcWithDijkstra("A");
         System.out.println(a);
         System.out.println(getAllPaths());
