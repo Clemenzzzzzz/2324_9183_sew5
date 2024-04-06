@@ -62,7 +62,27 @@ public class Graph {
     }
 
     public void calcWithDijkstra(String startNodeId) {
+        for (Node n :
+                nodes) {
+            n.init();
+        }
+        Node startNode = getNodebyId(startNodeId);
+        pq.add(startNode);
+        startNode.setStartNode();
+        Node currentNode;
+        while ((currentNode = pq.poll()) != null) {
+            currentNode.visit();
+        }
+    }
 
+    public Node getNodebyId(String s) {
+        for (Node n :
+                nodes) {
+            if (n.getId().equals(s)){
+                return n;
+            }
+        }
+        return null;
     }
 
     @Override
