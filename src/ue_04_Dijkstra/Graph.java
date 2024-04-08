@@ -11,15 +11,27 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 public class Graph {
+    /**
+     * all nodes
+     */
     private static List<Node> nodes = new ArrayList<>();
 
-    private static PriorityQueue<Node> pq = new PriorityQueue<>(); // TODO final ?
+    /**
+     * the "to-do" list
+     */
+    private static PriorityQueue<Node> pq = new PriorityQueue<>();
 
 
     public Graph(Path path) throws IOException {
         readGraphFromAdjacencyMatrixFile(path);
     }
 
+    /**
+     * reads a csv File and creates the necassary nodes and other things for the dijkstra algorithm out of it
+     *
+     * @param file file to read
+     * @throws IOException can throw Exception
+     */
     public void readGraphFromAdjacencyMatrixFile(Path file) throws IOException {
         List<String> lines = Files.readAllLines(file);
         String[] topLine = lines.get(0).split(";");
@@ -41,6 +53,12 @@ public class Graph {
         }
     }
 
+    /**
+     * Creates a node if it does not exist, or returns the needed node when already existing
+     *
+     * @param id the id of the requested Node
+     * @return returns the node which was requested
+     */
     public Node getOrCreateNode(String id) {
         Node node = new Node(id);
         boolean nodeExists = false;
@@ -57,6 +75,11 @@ public class Graph {
         return node;
     }
 
+    /**
+     * returns a String with all the paths from the start node to everywhere
+     *
+     * @return String with all the paths, if there are paths
+     */
     public static String getAllPaths() {
         StringBuilder erg = new StringBuilder();
         boolean paths = pathsAvailable();
@@ -71,6 +94,11 @@ public class Graph {
         return erg.toString();
     }
 
+    /**
+     * checks if a node has a path available with previous nodes
+     *
+     * @return true/false if a node has paths
+     */
     public static boolean pathsAvailable(){
         for (Node n :
                 nodes) {
@@ -81,6 +109,11 @@ public class Graph {
         return false;
     }
 
+    /**
+     * calculates the whole tree with the dijkstra algortihm and fills the objects as needed
+     *
+     * @param startNodeId the Node from where the dijkstra algorithm should be started
+     */
     public static void calcWithDijkstra(String startNodeId) {
         for (Node n :
                 nodes) {
@@ -95,6 +128,14 @@ public class Graph {
         }
     }
 
+    /**
+     * offers a new Distance to a node --> when there is no distance, or the new distance is better the node is changed
+     *
+     * @param node2change the node that gets offered the new distance
+     * @param newPrevious the node that is now the prvious node
+     * @param newDistance the new distance
+     * @return true/false if the node changed
+     */
     public static boolean offerDistance(Node node2change, Node newPrevious, int newDistance) {
         if (node2change.getDistance() == Integer.MAX_VALUE || node2change.getDistance() > newPrevious.getDistance() + newDistance) {
             node2change.change(newPrevious, newPrevious.getDistance() + newDistance);
@@ -106,6 +147,12 @@ public class Graph {
         return false;
     }
 
+    /**
+     * returns the node of the given id
+     *
+     * @param s id of node
+     * @return requested node
+     */
     public static Node getNodebyId(String s) {
         for (Node n :
                 nodes) {

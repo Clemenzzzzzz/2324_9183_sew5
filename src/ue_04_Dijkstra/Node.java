@@ -6,14 +6,29 @@ import java.util.TreeSet;
 
 public class Node implements Comparable<Node>{
 
+    /**
+     * id so the "name" od the Node
+     */
     private String id;
 
+    /**
+     * the edges connected to the node
+     */
     private final List<Edge> edges = new ArrayList<>();
 
+    /**
+     * the distance to the node
+     */
     private int distance = Integer.MAX_VALUE;
 
+    /**
+     * the previous node before this one
+     */
     private Node previous = null;
 
+    /**
+     * true/false if the node has already been visited
+     */
     boolean isVisited;
 
     public Node(String id) {
@@ -31,11 +46,16 @@ public class Node implements Comparable<Node>{
                 '}';
     }
 
+    /**
+     * String of the path to the node
+     *
+     * @return String of the path
+     */
     public String getPath() {
         StringBuilder erg = new StringBuilder();
         ArrayList<Node> path = getPathToSelf(this);
         erg.append(path.get(path.size() - 1).getId());
-        if (path.size() == 1) { // TODO is start node wird nicht angezeigt
+        if (path.size() == 1) {
             erg.append(": is start node");
         } else {
             for (int i = path.size() - 2; i >= 0; i--) {
@@ -47,6 +67,12 @@ public class Node implements Comparable<Node>{
     }
 
 
+    /**
+     * gets the path of nodes to one as a list of nodes
+     *
+     * @param node asked node
+     * @return path
+     */
     private static ArrayList<Node> getPathToSelf(Node node) {
         ArrayList<Node> path = new ArrayList<>();
         path.add(node);
@@ -65,27 +91,45 @@ public class Node implements Comparable<Node>{
         return path;
     }
 
+    /**
+     * adds a new edge to a node
+     *
+     * @param edge the new edge
+     */
     public void addEdge(Edge edge){
         edges.add(edge);
     }
 
+    /**
+     *initializes a node with standard parameters
+     */
     public void init() {
         isVisited = false;
         previous = null;
         distance = Integer.MAX_VALUE;
     }
 
+    /**
+     * changes the parameters of the node, after a new distance is calculated
+     *
+     * @param newPrevious the new previous node
+     * @param newDistance the new distance
+     */
     public void change(Node newPrevious, int newDistance) {
         previous = newPrevious;
         distance = newDistance;
     }
 
+    /**
+     * defines a node as a start node
+     */
     public void setStartNode() {
         distance = 0;
     }
 
-
-
+    /**
+     * visits a node
+     */
     public void visit() {
         isVisited = true;
         for (Edge edge: edges) {
@@ -93,17 +137,30 @@ public class Node implements Comparable<Node>{
         }
     }
 
+    /**
+     * gets the id of a node
+     * @return id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * gets the distance of a node
+     * @return distance
+     */
     public int getDistance() {
         return distance;
     }
 
+    /**
+     * gets the previous node
+     * @return previous node
+     */
     public Node getPrevious() {
         return previous;
     }
+
 
     @Override
     public int compareTo(Node o) {
@@ -114,6 +171,11 @@ public class Node implements Comparable<Node>{
         }
     }
 
+    /**
+     * String of edges for toString of Graph
+     *
+     * @return string with the edges of a node
+     */
     public String stringOfEdges() {
         String erg = "";
         for (Edge e :
@@ -123,6 +185,10 @@ public class Node implements Comparable<Node>{
         return erg;
     }
 
+    /**
+     * checks if a node is a start node
+     * @return the start node
+     */
     public boolean isStartNode(){
         return previous == null && distance == 0;
     }
