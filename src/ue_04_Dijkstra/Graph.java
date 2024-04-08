@@ -191,10 +191,10 @@ public class Graph {
         System.out.println(a);
         System.out.println(getAllPaths());
         calcWithDijkstra("A");
-        System.out.println(a);
+        //System.out.println(a);
         System.out.println(getAllPaths());
         calcWithDijkstra("D");
-        System.out.println(a);
+        //System.out.println(a);
         System.out.println(getAllPaths());
     }
 
